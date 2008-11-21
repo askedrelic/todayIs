@@ -4,6 +4,7 @@ require 'post.php';
 require 'birthdayPost.php';
 require 'infPost.php';
 require 'lolPost.php';
+require 'randomPost.php';
 
 class PostBot{ 
     public $username;
@@ -13,13 +14,14 @@ class PostBot{
     public $groupId;
 
     private $posts = array();
-    private $sleeptime = 180;
+    private $sleeptime;
     private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
     private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
-    public function __construct($username, $password){
+    public function __construct($username, $password, $sleep){
         $this->username = $username;
         $this->password = $password;
+        $this->sleeptime = $sleep;
     }
 
     public function setLatestChattyUrl() {
@@ -35,7 +37,7 @@ class PostBot{
         //pull last 5 digits of latest chatty URL
         $groupTemp = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
         //set the group on the post
-        $this->groupId = substr($groupTemp, strlen($groupTemp)-5, strlen($groupTemp));
+        this->groupId = substr($groupTemp, strlen($groupTemp)-5, strlen($groupTemp));
 
         curl_close($ch);
         }
@@ -67,7 +69,11 @@ class PostBot{
         //loop through all posts and post em!
         foreach($this->posts as $p) {
             sleep($this->sleeptime);
-            self::post($p);
+            $result = self::post($p);
+            if(preg_match("/Please wait a few minutes/i", $result)){
+                sleep(600);
+                self::post($p);
+            }
         }
         }
 
@@ -93,18 +99,20 @@ class PostBot{
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_URL, $this->postUrl);
-        curl_exec($ch);
+        $result = curl_exec($ch);
         curl_close($ch);
+        return $result;
         }
 }
 
-$a = new PostBot('askedrelic','xXxXxXxXxXx');
+$a = new PostBot('askedrelic','xXxXxXxXxXx', 180);
 $a->setLatestChattyUrl();
 $a->setFirstPost();
 
 $a->addPost(new BirthdayPost());
 $a->addPost(new LolPost());
 $a->addPost(new InfPost());
+$a->addPost(new RandomPost());
 
 $a->makePosts();
 ?>
