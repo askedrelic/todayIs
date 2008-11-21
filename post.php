@@ -49,7 +49,7 @@ class Post{
         return $result;
     }
 
-    private function findtag ($comment = ""){
+    protected function findtag ($comment = ""){
     //TODO: add code tag support
     $cmt = $comment;
     $i = 0;

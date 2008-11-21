@@ -24,9 +24,8 @@ class BirthdayPost extends Post {
             $body .= "No birthdays today!\n";
         }
 
-        $body .= "\n\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s\n";
-        $body .= "s[Horoscopes via http://www.trynt.com/trynt-astrology-horoscope-api/]s\n";
-        print $body;
+        $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s\n";
+        $body .= "s[Horoscopes via http://www.trynt.com/trynt-astrology-horoscope-api/]s";
         parent::__construct($body);
     }
 

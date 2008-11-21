@@ -15,7 +15,7 @@ class LolPost extends Post {
            $good = array("", "\n");
            $post = str_ireplace($bad, $good, $lol[$i]->post);
            $post = html_entity_decode($post);
-           $post = findtag($post);
+           $post = parent::findtag($post);
            $body .= "_[By: y{{$lol[$i]->post_author}}y with [{$lol[$i]->cnt} lolz] s[http://www.shacknews.com/laryn.x?id={$lol[$i]->thread_id}]s]_ \n".$post."\n\n";
         }
         $body .= "s[Want to LOL too? http://www.lmnopc.com/greasemonkey/shacklol/]s\n";

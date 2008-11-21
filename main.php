@@ -2,6 +2,8 @@
 require 'simple_html_dom.php';
 require 'post.php';
 require 'birthdayPost.php';
+require 'infPost.php';
+require 'lolPost.php';
 
 class PostBot{ 
     public $username;
@@ -11,7 +13,7 @@ class PostBot{
     public $groupId;
 
     private $posts = array();
-    private $sleeptime = 0;
+    private $sleeptime = 200;
     private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
     private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
@@ -78,7 +80,7 @@ class PostBot{
         $body = $post->encodePost();
         $fields = 'iuser='.urlencode($this->username);
         $fields .= '&ipass='.urlencode($this->password);
-        $fields .= '&parent='.urlencode($this->parentId); //should fail first time?
+        $fields .= '&parent='.urlencode($this->parentId);
         $fields .= '&group='.urlencode($this->groupId);
         $fields .= '&body='.$post->encodePost();
 
@@ -91,21 +93,18 @@ class PostBot{
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_URL, $this->postUrl);
-        //$result = curl_exec($ch);
-
+        curl_exec($ch);
         curl_close($ch);
         }
 }
 
-$a = new PostBot('askedrelic','behrens');
+$a = new PostBot('askedrelic','xXxXxXxXxXx');
 $a->setLatestChattyUrl();
 $a->setFirstPost();
 
-$b = new BirthdayPost();
-$c = new Post('lol5');
-
-$a->addPost($b);
-$a->addPost($c);
+$a->addPost(new BirthdayPost());
+$a->addPost(new LolPost());
+$a->addPost(new InfPost());
 
 $a->makePosts();
 ?>
