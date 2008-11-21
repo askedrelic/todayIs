@@ -19,13 +19,13 @@ class BirthdayPost extends Post {
             $body .= "\n";
             $body .= self::getHoroscope();
             $body .= "\nCongrats folks!\n";
+            $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s\n";
+            $body .= "s[Horoscopes via http://www.trynt.com/trynt-astrology-horoscope-api/]s";
         }
         else {
             $body .= "No birthdays today!\n";
+            $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s";
         }
-
-        $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s\n";
-        $body .= "s[Horoscopes via http://www.trynt.com/trynt-astrology-horoscope-api/]s";
         parent::__construct($body);
     }
 

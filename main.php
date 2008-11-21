@@ -13,7 +13,7 @@ class PostBot{
     public $groupId;
 
     private $posts = array();
-    private $sleeptime = 200;
+    private $sleeptime = 180;
     private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
     private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
@@ -52,7 +52,7 @@ class PostBot{
         self::post($p);
 
         //get the latest chatty and parse for the last post by my username...
-        $dom = file_get_dom("http://shackchatty.com/index.xml");
+        $dom = file_get_dom("http://shackchatty.com/{$this->groupId}.xml");
         $v = $dom->find("comment[author={$username}]",0);
 
         $this->parentId = $v->id;
@@ -61,7 +61,7 @@ class PostBot{
     public function addPost($post) {
         //add a post to the pool
         array_push($this->posts, $post);
-    }
+        }
 
     public function makePosts() {
         //loop through all posts and post em!
@@ -69,7 +69,7 @@ class PostBot{
             sleep($this->sleeptime);
             self::post($p);
         }
-    }
+        }
 
     private function post($post) {
         //    * iuser: username
