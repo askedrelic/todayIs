@@ -37,7 +37,7 @@ class PostBot{
         //pull last 5 digits of latest chatty URL
         $groupTemp = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
         //set the group on the post
-        this->groupId = substr($groupTemp, strlen($groupTemp)-5, strlen($groupTemp));
+        $this->groupId = substr($groupTemp, strlen($groupTemp)-5, strlen($groupTemp));
 
         curl_close($ch);
         }
@@ -55,7 +55,7 @@ class PostBot{
 
         //get the latest chatty and parse for the last post by my username...
         $dom = file_get_dom("http://shackchatty.com/{$this->groupId}.xml");
-        $v = $dom->find("comment[author={$username}]",0);
+        $v = $dom->find("comment[author={$this->username}]",0);
 
         $this->parentId = $v->id;
         }
