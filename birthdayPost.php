@@ -47,7 +47,7 @@ class BirthdayPost extends Post {
         $sdate = $h["start-date"];
         $edate = $h["end-date"];
         $horoscope = trim($h["horoscope"]["horoscope"]);
-        return "f[/[Now with horoscopes!]/]f\nb[{$name}]b {$sdate} - {$edate}\n{$horoscope}\n";
+        return "b[{$name}]b {$sdate} - {$edate}\n{$horoscope}\n";
     }
 
     private function agestring($age) {
