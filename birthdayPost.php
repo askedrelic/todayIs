@@ -71,7 +71,7 @@ class BirthdayPost extends Post {
             7 => "better have a great time for their {$ord_real_age}", 
             8 => "Alles Gute zum Geburtstag {$real_age}", 
             9 => "happy birthday for your {$ord_real_age}", 
-            10 => ": Feliz Cumplea-os {$real_age}!!!", 
+            10 => ": Feliz Cumpleaños {$real_age}!!!", 
             11 => ": may you live long and prosper for your {$ord_real_age}", 
             12 => "needs plenty of hookers and blow for their {$ord_real_age}", 
             13 => "may have a present waiting for their {$ord_real_age}. Or not",
