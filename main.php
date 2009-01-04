@@ -44,7 +44,7 @@ class PostBot{
 
     public function setFirstPost() {
         $p = new Post('');
-        $dayth = $p->ord_suf(date('z'));
+        $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
 
         $body .= "This is your life shackers, enjoy it.";
