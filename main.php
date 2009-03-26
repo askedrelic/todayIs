@@ -47,13 +47,15 @@ class PostBot{
         $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
 
-        $body .= "This is your life shackers, enjoy it.";
+        //$body .= "This is your life shackers, enjoy it.";
+        $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | cut -d \- -f 2");
         
         $p->body = $body;
         //make first post
         self::post($p);
 
         //get the latest chatty and parse for the last post by my username...
+        //$dom = file_get_dom("http://chatty.elrepositorio.com/{$this->groupId}.xml");
         $dom = file_get_dom("http://shackchatty.com/{$this->groupId}.xml");
         $v = $dom->find("comment[author={$this->username}]",0);
 
@@ -112,7 +114,7 @@ $a->setFirstPost();
 $a->addPost(new BirthdayPost());
 $a->addPost(new LolPost());
 $a->addPost(new InfPost());
-$a->addPost(new RandomPost());
+//$a->addPost(new RandomPost());
 
 $a->makePosts();
 ?>
