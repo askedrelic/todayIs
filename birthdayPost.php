@@ -16,11 +16,8 @@ class BirthdayPost extends Post {
             while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
                   $body .= "y{".$row["username"]."}y ". self::agestring($row["dob"]) ."\n";
             }
-            $body .= "\n";
-            $body .= self::getHoroscope();
             $body .= "\nCongrats folks!\n";
-            $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s\n";
-            $body .= "s[Horoscopes via http://www.trynt.com/trynt-astrology-horoscope-api/]s";
+            $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s";
         }
         else {
             $body .= "No birthdays today!\n";
