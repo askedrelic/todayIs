@@ -26,7 +26,6 @@ class RandomPost extends Post {
 
     private function cleanText($text)
     {
-        //TODO: is this working?
         $tmp = htmlspecialchars_decode($text);
         //$tmp = html_entity_decode($tmp);
 
