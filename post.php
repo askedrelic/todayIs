@@ -49,6 +49,18 @@ class Post{
         return $result;
     }
 
+    protected function isNWS($id) {
+        $url = "http://www.shackchatty.com/thread/{$id}.xml";
+        $dom = file_get_dom($url);
+        $ret = $dom->find("comment[id={$id}]", 0);
+
+        if($ret->category == "nws") {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     protected function findtag ($comment = ""){
     //TODO: add code tag support
     $cmt = $comment;

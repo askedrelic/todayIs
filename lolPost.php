@@ -21,16 +21,15 @@ class LolPost extends Post {
             $post = parent::findtag($post);
             $body .= "_[By: y{{$lol[$i]->post_author}}y with [{$lol[$i]->cnt} lolz] s[http://www.shacknews.com/laryn.x?id={$lol[$i]->thread_id}]s]_ \n";
 
-            //TODO: pull down post and see if it is marked NWS
-            if(preg_match('/nws/i', $post)) {
+            //TODO: does this work? is line numbers correct?
+            if(preg_match('/nws/i', $post) || parent::isNWS($lol[$i]->thread_id)) {
                 $body .= "r{!!!!!          Possible NWS detected!          !!!!!}r \n";
-            } 
-            $body .= $post;
+                $body .= $post;
+                $body .= "\n r{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}r \n";
+            } else {  
+                $body .= $post;
+            }
 
-            //TODO: is this extra \n needed?
-            if(preg_match('/nws/i', $post)) {
-                $body .= "\n r{!!!!!!!!!!}r \n";
-            } 
             $body .= "\n\n";
         }
         $body .= "s[Want to LOL too? http://www.lmnopc.com/greasemonkey/shacklol/]s\n";
