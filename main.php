@@ -60,6 +60,9 @@ class PostBot{
         $v = $dom->find("comment[author={$this->username}]",0);
 
         $this->parentId = $v->id;
+
+        //Post URL to API
+        shell_exec("echo {$v->id} > /home/askedrelic/public_html/asktherelic.com/public/shack/todayis.txt");
         }
 
     public function addPost($post) {
