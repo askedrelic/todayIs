@@ -7,11 +7,29 @@ class LolPost extends Post {
         $result = parent::curlData($url);
         $lol = unserialize($result);
 
-        //multiplier bonus section
+        $body = "_[g{This Old LOL Pile:}g]_ \nThe top 5 y{LOL'D}y posts from yesterday. Don't miss the funny, if there was any to begin with! \n\n";
 
+        //multiplier bonus section
+        //This whole section is terrible I must say
+        $single = array();
+        $double = array();
+        for($i=0; $i < count($lol); $i++) {
+            $author = $lol[$i]->post_author;
+            array_push($single, $author);
+        }
+        for($i=0; $i < count($single); $i++) {
+            if(count(array_keys($single, $single[$i])) > 1) {
+                array_push($double, $single[$i]);
+            }
+        }
+        $double = array_unique($double);
+        foreach($double as $key) {
+            $body .= "*[Multiloller bonus for y{{$key}}y!!!!]*\n";
+        }
+
+        $body .= "\n";
 
         //$lol has methods thread_id, cnt, who, post_author, post, post_date
-        $body = "_[g{This Old LOL Pile:}g]_ \nThe top 5 y{LOL'D}y posts from yesterday. Don't miss the funny, if there was any to begin with! \n\n";
         for($i=0; $i < count($lol); $i++) {
            //cleanup text for findtag
             $bad = array("<div class=\"postbody\">" , "<br />"); 
@@ -20,17 +38,11 @@ class LolPost extends Post {
             $post = html_entity_decode($post);
             $post = parent::findtag($post);
             $body .= "_[By: y{{$lol[$i]->post_author}}y with [{$lol[$i]->cnt} lolz] s[http://www.shacknews.com/laryn.x?id={$lol[$i]->thread_id}]s]_ \n";
-
-            //TODO: does this work? is line numbers correct?
             if(preg_match('/nws/i', $post) || parent::isNWS($lol[$i]->thread_id)) {
-                $body .= "r{!!!!!          Possible NWS detected!          !!!!!}r \n";
-                $body .= $post;
-                $body .= "\n r{!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!}r \n";
-            } else {  
-                $body .= $post;
+                $body .= "r{!!!!!          (Possible NWS Post detected!)          !!!!!}r \n";
             }
-
-            $body .= "\n\n";
+            $body .= $post;
+            $body .= "\n\n\n";
         }
         $body .= "s[Want to LOL too? http://www.lmnopc.com/greasemonkey/shacklol/]s\n";
         parent::__construct($body);
