@@ -16,7 +16,7 @@ class InfPost extends Post {
            $post = str_ireplace($bad, $good, $inf[$i]->post);
            $post = html_entity_decode($post);
            $post = parent::findtag($post);
-           $body .= "_[By: y{{$inf[$i]->post_author}}y with [{$inf[$i]->cnt} infz] s[http://www.shacknews.com/laryn.x?id={$inf[$i]->thread_id}]s]_ \n".$post."\n\n";
+           $body .= "_[By: y{{$inf[$i]->post_author}}y with [{$inf[$i]->cnt} infz]]_ s[http://www.shacknews.com/laryn.x?id={$inf[$i]->thread_id}]s\n".$post."\n\n";
         }
         $body .= "s[Want to INF too? http://www.lmnopc.com/greasemonkey/shacklol/]s\n";
         parent::__construct($body);
