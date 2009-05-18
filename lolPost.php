@@ -24,10 +24,8 @@ class LolPost extends Post {
         }
         $double = array_unique($double);
         foreach($double as $key) {
-            $body .= "*[Multiloller bonus for y{{$key}}y!!!!]*\n";
+            $body .= "*[Multiloller bonus for y{{$key}}y!!!!]*\n\n";
         }
-
-        $body .= "\n";
 
         //$lol has methods thread_id, cnt, who, post_author, post, post_date
         for($i=0; $i < count($lol); $i++) {
@@ -42,7 +40,7 @@ class LolPost extends Post {
                 $body .= "r{!!!!!          (Possible NWS Post detected!)          !!!!!}r \n";
             }
             $body .= $post;
-            $body .= "\n\n\n";
+            $body .= "\n\n";
         }
         $body .= "s[Want to LOL too? http://www.lmnopc.com/greasemonkey/shacklol/]s\n";
         parent::__construct($body);
