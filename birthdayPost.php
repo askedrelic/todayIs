@@ -14,15 +14,14 @@ class BirthdayPost extends Post {
         $num = mysql_numrows($result);
         if($num > 0) {
             while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
-                  $body .= "y{".$row["username"]."}y ". self::agestring($row["dob"]) ."\n";
+                  $body .= "y{".$row["username"]."}y ". self::agestring($row["dob"], $row["username"]) ."\n";
             }
             $body .= "\nCongrats folks!\n";
-            $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s";
         }
         else {
             $body .= "No birthdays today!\n";
-            $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s";
         }
+        $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s";
         parent::__construct($body);
     }
 
@@ -47,7 +46,7 @@ class BirthdayPost extends Post {
         return "b[{$name}]b {$sdate} - {$edate}\n{$horoscope}\n";
     }
 
-    private function agestring($age) {
+    private function agestring($age, $username) {
         $ret;
         if($age == "1900" || $age == "0000") {
             $ret = "is a year older";
@@ -56,6 +55,7 @@ class BirthdayPost extends Post {
         $year = substr($age, 0, 4);
         $real_age = date('Y') - $year;
         $ord_real_age = parent::ord_suf($real_age);
+        $firstchar = substr($username, 0, 1);
 
         $fun = array(
             0 => "better have fun turning {$real_age}", 
@@ -73,7 +73,9 @@ class BirthdayPost extends Post {
             12 => "needs plenty of hookers and blow for their {$ord_real_age}", 
             13 => "may have a present waiting for their {$ord_real_age}. Or not",
             14 => "has been a virgin for {$real_age} long years",
-            15 => "better not have a lame {$ord_real_age}"
+            15 => "better not have a lame {$ord_real_age}",
+            16 => "HAPPY BURFDAY {$real_age}!!!",
+            17 => "OMGH{$firstchar}D!!! :O"
         );
 
         //important stuff
