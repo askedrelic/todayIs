@@ -8,7 +8,8 @@ class InfPost extends Post {
         $inf = unserialize($result);
 
         //$lol has methods thread_id, cnt, who, post_author, post, post_date
-        $body = "_[g{The Top INF:}g]_ \nThe b{smartest}b thing that was said yesterday. Get yourself to school. \n\n";
+        #$body = "_[g{The Top INF:}g]_ \nThe b{smartest}b thing that was said yesterday. Get yourself to school. \n\n";
+        $body = "_[g{The Top INF:}g]_ \n\"The thing that was posted yesterday that compelled the most amount of people to hit the inf button.\"\n\n";
         for($i=0; $i < 1; $i++) {
            //cleanup text for findtag
            $bad = array("<div class=\"postbody\">" , "<br />"); 

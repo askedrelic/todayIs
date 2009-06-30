@@ -37,7 +37,7 @@ class LolPost extends Post {
             $post = parent::findtag($post);
             $body .= "_[By: y{{$lol[$i]->post_author}}y with [{$lol[$i]->cnt} lolz]]_ s[http://www.shacknews.com/laryn.x?id={$lol[$i]->thread_id}]s\n";
             if(preg_match('/nws/i', $post) || parent::isNWS($lol[$i]->thread_id)) {
-                $body .= "r{!!!!!          (Possible NWS Post detected!)          !!!!!}r \n";
+                $body .= "r{!!!          (Possible NWS Post detected!)          !!!}r \n";
             }
             $body .= $post;
             $body .= "\n\n";
