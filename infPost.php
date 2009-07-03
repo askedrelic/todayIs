@@ -2,7 +2,7 @@
 class InfPost extends Post {
 
     public function __construct(){
-        $yesterday = date("m")."/".(date("d")-1)."/".date("Y");
+        $yesterday = date( 'm/d/Y', time() - 86400 );
         $url = "http://www.lmnopc.com/greasemonkey/shacklol/top5feed.php?date={$yesterday}&tag=inf&format=serialized";
         $result = parent::curlData($url);
         $inf = unserialize($result);
