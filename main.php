@@ -76,7 +76,7 @@ class PostBot{
             sleep($this->sleeptime);
             $result = self::post($p);
             if(preg_match("/Please wait a few minutes/i", $result)){
-                sleep(600);
+                sleep(360);
                 self::post($p);
             }
         }
@@ -110,7 +110,7 @@ class PostBot{
         }
 }
 
-$a = new PostBot('askedrelic','xXxXxXxXxXx', 180);
+$a = new PostBot('askedrelic','xXxXxXxXxXx', 90);
 $a->setLatestChattyUrl();
 $a->setFirstPost();
 
