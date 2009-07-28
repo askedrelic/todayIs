@@ -57,26 +57,33 @@ class BirthdayPost extends Post {
         $ord_real_age = parent::ord_suf($real_age);
         $firstchar = substr($username, 0, 1);
 
-        $fun = array(
-            0 => "better have fun turning {$real_age}", 
-            1 => "finally hits {$real_age} today", 
-            2 => "turns {$real_age}", 
-            3 => "is now {$real_age}", 
-            4 => "has can my birthday wishes for their {$ord_real_age}", 
-            5 => "IS IN UR BIRTHDAY CAKE FOR THIER {$ord_real_age}", 
-            6 => "is so so old at {$real_age}", 
-            7 => "better have a great time for their {$ord_real_age}", 
-            8 => "Alles Gute zum Geburtstag {$real_age}", 
-            9 => "happy birthday for your {$ord_real_age}", 
-            10 => ": Feliz Cumpleaños {$real_age}!!!", 
-            11 => ": may you live long and prosper for your {$ord_real_age}", 
-            12 => "needs plenty of hookers and blow for their {$ord_real_age}", 
-            13 => "may have a present waiting for their {$ord_real_age}. Or not",
-            14 => "has been a virgin for {$real_age} long years",
-            15 => "better not have a lame {$ord_real_age}",
-            16 => "HAPPY BURFDAY {$real_age}!!!",
-            17 => "OMGH{$firstchar}D!!! :O"
-        );
+        $fun = array();
+        array_push($fun, "better have fun turning {$real_age}");
+        array_push($fun, "finally hits {$real_age} today");
+        array_push($fun, "turns {$real_age}");
+        array_push($fun, "is now {$real_age}");
+        array_push($fun, "has can my birthday wishes for their {$ord_real_age}");
+        array_push($fun, "IS IN UR BIRTHDAY CAKE FOR THIER {$ord_real_age}");
+        array_push($fun, "is so so old at {$real_age}");
+        array_push($fun, "better have a great time for their {$ord_real_age}");
+        array_push($fun, "happy birthday for your {$ord_real_age}");
+        array_push($fun, ": may you live long and prosper for your {$ord_real_age}");
+        array_push($fun, "needs plenty of hookers and blow for their {$ord_real_age}");
+        array_push($fun, "may have a present waiting for their {$ord_real_age}. Or not");
+        array_push($fun, "has been a virgin for {$real_age} long years");
+        array_push($fun, "better not have a lame {$ord_real_age}");
+        array_push($fun, "HAPPY BURFDAY {$real_age}");
+        array_push($fun, "OMGH{$firstchar}D :O");
+
+        array_push($fun, ": Feliz Cumpleaños {$real_age}");
+        array_push($fun, ":Alles Gute zum Geburtstag {$real_age}");
+        array_push($fun, ":Buon Compleanno {$real_age}");
+        array_push($fun, ":Yom Huledet Same'ach {$real_age}");
+        array_push($fun, ":Joyeux Anniversaire Branleur");
+        array_push($fun, ":Tillykke med fodselsdagen {$real_age}");
+        array_push($fun, ":Suk San Wan Keut");
+        array_push($fun, ":Hyvaa syntymapaivaa");
+        array_push($fun, ":Van harte gefeliciteerd met je verjaardag");
 
         //important stuff
         switch(TRUE) {

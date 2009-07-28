@@ -47,9 +47,15 @@ class PostBot{
         $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
 
+        $cdate = mktime(0, 0, 0, 8, 13, 2009, 0);
+        $today = time();
+        $difference = $cdate - $today;
+        if ($difference < 0) { $difference = 0; }
+        $body .= "There are ".floor($difference/60/60/24)." days until Quakecon!\n";
+        
         //$body .= "This is your life shackers, enjoy it.";
         $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | cut -d \- -f 2");
-        
+
         $p->body = $body;
         //make first post
         self::post($p);
