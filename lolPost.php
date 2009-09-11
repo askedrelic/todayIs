@@ -3,7 +3,7 @@ class LolPost extends Post {
 
     public function __construct(){
         $yesterday = date( 'm/d/Y', time() - 86400 );
-        $url = "http://www.lmnopc.com/greasemonkey/shacklol/top5feed.php?date={$yesterday}&format=serialized";
+        $url = "http://www.lmnopc.com/greasemonkey/shacklol/api.php?format=php&date={$yesterday}&tag=lol";
         $result = parent::curlData($url);
         $lol = unserialize($result);
 
@@ -14,7 +14,7 @@ class LolPost extends Post {
         $single = array();
         $double = array();
         for($i=0; $i < count($lol); $i++) {
-            $author = $lol[$i]->post_author;
+            $author = $lol[$i]["author"];
             array_push($single, $author);
         }
         for($i=0; $i < count($single); $i++) {
@@ -27,16 +27,16 @@ class LolPost extends Post {
             $body .= "*[Multiloller bonus for y{{$key}}y!!!!]*\n\n";
         }
 
-        //$lol has methods thread_id, cnt, who, post_author, post, post_date
+        //$lol has methods body, author, tag_count, id
         for($i=0; $i < count($lol); $i++) {
            //cleanup text for findtag
             $bad = array("<div class=\"postbody\">" , "<br />"); 
             $good = array("", "\n");
-            $post = str_ireplace($bad, $good, $lol[$i]->post);
+            $post = str_ireplace($bad, $good, $lol[$i]["body"]);
             $post = html_entity_decode($post);
             $post = parent::findtag($post);
-            $body .= "_[By: y{{$lol[$i]->post_author}}y with [{$lol[$i]->cnt} lolz]]_ s[http://www.shacknews.com/laryn.x?id={$lol[$i]->thread_id}]s\n";
-            if(preg_match('/nws/i', $post) || parent::isNWS($lol[$i]->thread_id)) {
+            $body .= "_[By: y{{$lol[$i]["author"]}}y with [{$lol[$i]["tag_count"]} lolz]]_ s[http://www.shacknews.com/laryn.x?id={$lol[$i]["id"]}]s\n";
+            if(preg_match('/nws/i', $post) || parent::isNWS($lol[$i]["id"])) {
                 $body .= "r{!!!          (Possible NWS Post detected!)          !!!}r \n";
             }
             $body .= $post;
