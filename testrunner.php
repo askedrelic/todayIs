@@ -7,8 +7,9 @@ require 'lolPost.php';
 require 'randomPost.php';
 
 $a = new BirthdayPost();
-print_r($a);
+// print_r($a);
 echo "\n\n";
-echo $a->body;
+echo urlencode$a->body;
 
+echo "\n\n";
 ?>

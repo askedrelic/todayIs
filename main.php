@@ -4,6 +4,7 @@ require 'post.php';
 require 'birthdayPost.php';
 require 'infPost.php';
 require 'lolPost.php';
+require 'tagPost.php';
 require 'randomPost.php';
 
 class PostBot{ 
@@ -42,7 +43,7 @@ class PostBot{
         curl_close($ch);
         }
 
-    public function setFirstPost() {
+    public function setRootPost() {
         $p = new Post('');
         $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
@@ -121,10 +122,11 @@ class PostBot{
 
 $a = new PostBot('askedrelic','xXxXxXxXxXx', 90);
 $a->setLatestChattyUrl();
-$a->setFirstPost();
+$a->setRootPost();
 
 $a->addPost(new BirthdayPost());
 $a->addPost(new LolPost());
+$a->addPost(new TagPost());
 $a->addPost(new InfPost());
 //$a->addPost(new RandomPost());
 
