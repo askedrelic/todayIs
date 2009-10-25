@@ -5,6 +5,7 @@ require 'birthdayPost.php';
 require 'infPost.php';
 require 'lolPost.php';
 require 'tagPost.php';
+require 'unfPost.php';
 require 'randomPost.php';
 
 class PostBot{ 
@@ -127,6 +128,7 @@ $a->setRootPost();
 $a->addPost(new BirthdayPost());
 $a->addPost(new LolPost());
 $a->addPost(new TagPost());
+$a->addPost(new UnfPost());
 $a->addPost(new InfPost());
 //$a->addPost(new RandomPost());
 
