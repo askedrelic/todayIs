@@ -4,12 +4,16 @@ require 'post.php';
 require 'birthdayPost.php';
 require 'infPost.php';
 require 'lolPost.php';
+require 'tagPost.php';
+require 'unfPost.php';
 require 'randomPost.php';
 
-$a = new BirthdayPost();
+
+// $a = new BirthdayPost();
+// $a = new LolPost();
+$a = new TagPost();
 // print_r($a);
-echo "\n\n";
-echo urlencode$a->body;
+// echo urlencode$a->body;
 
 echo "\n\n";
 ?>

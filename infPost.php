@@ -12,8 +12,8 @@ class InfPost extends Post {
         $body = "_[g{The Top INF:}g]_ \n\"The thing that was posted yesterday that compelled the most amount of people to hit the inf button.\"\n\n";
         for($i=0; $i < 1; $i++) {
            //cleanup text for findtag
-           $bad = array("<div class=\"postbody\">" , "<br />"); 
-           $good = array("", "\n");
+           $bad = array("<div class=\"postbody\">" , "<br />", "<br/>"); 
+           $good = array("", "\n", "\n");
            $post = str_ireplace($bad, $good, $inf[$i]["body"]);
            $post = html_entity_decode($post);
            $post = parent::findtag($post);

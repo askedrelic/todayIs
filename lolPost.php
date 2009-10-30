@@ -30,8 +30,8 @@ class LolPost extends Post {
         //$lol has methods body, author, tag_count, id
         for($i=0; $i < count($lol); $i++) {
            //cleanup text for findtag
-            $bad = array("<div class=\"postbody\">" , "<br />"); 
-            $good = array("", "\n");
+            $bad = array("<div class=\"postbody\">" , "<br />", "<br/>"); 
+            $good = array("", "\n", "\n");
             $post = str_ireplace($bad, $good, $lol[$i]["body"]);
             $post = html_entity_decode($post);
             $post = parent::findtag($post);

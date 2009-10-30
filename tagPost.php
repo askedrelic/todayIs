@@ -10,8 +10,8 @@ class TagPost extends Post {
         $body = "_[g{The Top Tags:}g]_ \nThis other thing that no one really uses!!!\n\n";
         for($i=0; $i < 3; $i++) {
            //cleanup text for findtag
-           $bad = array("<div class=\"postbody\">" , "<br />"); 
-           $good = array("", "\n");
+           $bad = array("<div class=\"postbody\">" , "<br />", "<br/>"); 
+           $good = array("", "\n", "\n");
            $post = str_ireplace($bad, $good, $tag[$i]["body"]);
            $post = html_entity_decode($post);
            $post = parent::findtag($post);
