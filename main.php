@@ -70,16 +70,21 @@ class PostBot{
         $dom = file_get_dom("http://shackchatty.com/{$this->groupId}.xml");
         $v = $dom->find("comment[author={$this->username}]",0);
 
+        #TODO if no parent id, stop posting and email error
+        if($v->id === "") {
+            print_r($v);
+            exit();
+        }
         $this->parentId = $v->id;
 
         //Post URL to API
         shell_exec("echo {$v->id} > /home/askedrelic/public_html/asktherelic.com/public/shack/todayis.txt");
-        }
+    }
 
     public function addPost($post) {
         //add a post to the pool
         array_push($this->posts, $post);
-        }
+    }
 
     public function makePosts() {
         //loop through all posts and post em!
@@ -91,7 +96,7 @@ class PostBot{
                 self::post($p);
             }
         }
-        }
+    }
 
     private function post($post) {
         //    * iuser: username
@@ -118,7 +123,7 @@ class PostBot{
         $result = curl_exec($ch);
         curl_close($ch);
         return $result;
-        }
+    }
 }
 
 $a = new PostBot('askedrelic','xXxXxXxXxXx', 90);
