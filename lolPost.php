@@ -37,9 +37,9 @@ class LolPost extends Post {
             $post = parent::findtag($post);
             $star = "";
             if($i == 0) {
-                $star = html_entity_decode("&#9733;", ENT_NOQUOTES, 'UTF-8');
+                $star = "q[q[".html_entity_decode("&#9733;", ENT_NOQUOTES, 'UTF-8')."]q]q";
             }
-            $body .= "_[q[q[{$star}]q]q By: y{{$lol[$i]["author"]}}y with [{$lol[$i]["tag_count"]} lolz] q[q[{$star}]q]q]_ s[http://www.shacknews.com/laryn.x?id={$lol[$i]["id"]}]s \n";
+            $body .= "_[{$star} By: y{{$lol[$i]["author"]}}y with [{$lol[$i]["tag_count"]} lolz] {$star}]_ s[http://www.shacknews.com/laryn.x?id={$lol[$i]["id"]}]s \n";
             if(preg_match('/nws/i', $post) || parent::isNWS($lol[$i]["id"])) {
                 $body .= "r{!!!          (Possible NWS Post detected!)          !!!}r \n";
             }

@@ -10,10 +10,16 @@ require 'randomPost.php';
 
 
 // $a = new BirthdayPost();
-// $a = new LolPost();
-$a = new TagPost();
 // print_r($a);
-// echo urlencode$a->body;
+$a = new LolPost();
+echo $a->body;
+// print_r($a);
+// $a = new InfPost();
+// echo $a->body;
+// print_r($a);
+// $a = new TagPost();
+// print_r($a);
+// echo $a->body;
 
 echo "\n\n";
 ?>
