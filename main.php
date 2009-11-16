@@ -71,10 +71,6 @@ class PostBot{
         $v = $dom->find("comment[author={$this->username}]",0);
 
         #TODO if no parent id, stop posting and email error
-        if($v->id === "") {
-            print_r($v);
-            exit();
-        }
         $this->parentId = $v->id;
 
         //Post URL to API
