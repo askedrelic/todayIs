@@ -9,6 +9,7 @@ require 'unfPost.php';
 require 'randomPost.php';
 
 
+//test
 // $a = new BirthdayPost();
 // print_r($a);
 $a = new LolPost();
