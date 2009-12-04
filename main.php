@@ -59,7 +59,7 @@ class PostBot{
         }
         
         //$body .= "This is your life shackers, enjoy it.";
-        $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | cut -d \- -f 2");
+        $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | sed s/^X-//");
 
         $p->body = $body;
         //make first post
