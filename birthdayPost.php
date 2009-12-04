@@ -4,6 +4,7 @@ class BirthdayPost extends Post {
     public function __construct(){
         $body = "_[g{Shacker Birthdays:}g]_ \n";
 
+        //TODO: refactor out... maybe?
         $dbh=mysql_connect ("localhost", "shack", "shack") or die ('I cannot connect to the database because: ' . mysql_error());
         mysql_select_db ("shack");
 
