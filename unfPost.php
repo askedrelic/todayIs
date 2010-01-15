@@ -15,7 +15,7 @@ class UnfPost extends Post {
            $post = str_ireplace($bad, $good, $unf[$i]["body"]);
            $post = html_entity_decode($post);
            $post = parent::findtag($post);
-           $body .= "By: y{{$unf[$i]["author"]}}y with [{$unf[$i]["tag_count"]} unfz] s[http://www.shacknews.com/laryn.x?id={$unf[$i]["id"]}]s \n";
+           $body .= "_[By: y{{$unf[$i]["author"]}}y with [{$unf[$i]["tag_count"]} unfz]]_ s[http://www.shacknews.com/laryn.x?id={$unf[$i]["id"]}]s \n";
            //If the post is tagged NWS or has nws literally in it, notify the public
            if(preg_match('/nws/i', $post) || parent::isNWS($unf[$i]["id"])) {
                $body .= "r{!!!          (Possible NWS Post detected!)          !!!}r \n";

@@ -15,7 +15,7 @@ class TagPost extends Post {
            $post = str_ireplace($bad, $good, $tag[$i]["body"]);
            $post = html_entity_decode($post);
            $post = parent::findtag($post);
-           $body .= "By: y{{$tag[$i]["author"]}}y with [{$tag[$i]["tag_count"]} tagz] s[http://www.shacknews.com/laryn.x?id={$tag[$i]["id"]}]s \n";
+           $body .= "_[By: y{{$tag[$i]["author"]}}y with [{$tag[$i]["tag_count"]} tagz]]_ s[http://www.shacknews.com/laryn.x?id={$tag[$i]["id"]}]s \n";
            //If the post is tagged NWS or has nws literally in it, notify the public
            if(preg_match('/nws/i', $post) || parent::isNWS($tag[$i]["id"])) {
                $body .= "r{!!!          (Possible NWS Post detected!)          !!!}r \n";

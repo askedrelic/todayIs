@@ -17,7 +17,7 @@ class InfPost extends Post {
            $post = str_ireplace($bad, $good, $inf[$i]["body"]);
            $post = html_entity_decode($post);
            $post = parent::findtag($post);
-           $body .= "By: y{{$inf[$i]["author"]}}y with [{$inf[$i]["tag_count"]} infz] s[http://www.shacknews.com/laryn.x?id={$inf[$i]["id"]}]s \n";
+           $body .= "_[By: y{{$inf[$i]["author"]}}y with [{$inf[$i]["tag_count"]} infz]]_ s[http://www.shacknews.com/laryn.x?id={$inf[$i]["id"]}]s \n";
            //If the post is tagged NWS or has nws literally in it, notify the public
            if(preg_match('/nws/i', $post) || parent::isNWS($inf[$i]["id"])) {
                $body .= "r{!!!          (Possible NWS Post detected!)          !!!}r \n";
