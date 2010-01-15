@@ -40,7 +40,7 @@ class LolPost extends Post {
             if($i == 0) {
                 $star = "q[q[".html_entity_decode("&#9733;", ENT_NOQUOTES, 'UTF-8')."]q]q";
             }
-            $body .= "_[{$star} By: y{{$lol[$i]["author"]}}y with [{$lol[$i]["tag_count"]} lolz] {$star}]_ s[http://www.shacknews.com/laryn.x?id={$lol[$i]["id"]}]s \n";
+            $body .= "{$star} By: y{{$lol[$i]["author"]}}y with [{$lol[$i]["tag_count"]} lolz] {$star} s[http://www.shacknews.com/laryn.x?id={$lol[$i]["id"]}]s \n";
             //If the post is tagged NWS or has nws literally in it, notify the 
             //public
             if(preg_match('/nws/i', $post) || parent::isNWS($lol[$i]["id"])) {
