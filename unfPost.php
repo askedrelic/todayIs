@@ -7,7 +7,7 @@ class UnfPost extends Post {
         $result = parent::curlData($url);
         $unf = unserialize($result);
 
-        $body = "_[g{The Top Unfs:}g]_ \nThis is all probably r{NWS}r, seriously, look before you click!\n\n";
+        $body = "_[r{The Top Unfs:}r]_ \nThis is all probably r{NWS}r, seriously, look before you click!\n\n";
         for($i=0; $i < 1; $i++) {
            //cleanup text for findtag
            $bad = array("<div class=\"postbody\">" , "<br />", "<br/>"); 

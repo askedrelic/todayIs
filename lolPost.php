@@ -7,10 +7,9 @@ class LolPost extends Post {
         $result = parent::curlData($url);
         $lol = unserialize($result);
 
-        $body = "_[g{This Old LOL Pile:}g]_ \nThe top 5 y{LOL'D}y posts from yesterday. Don't miss the funny, if there was any to begin with! \n\n";
+        $body = "_[y{This Old LOL Pile:}y]_ \nThe top 5 y{LOL'D}y posts from yesterday. Don't miss the funny, if there was any to begin with! \n\n";
 
-        //multiplier bonus section
-        //This whole section is terrible I must say
+        //multiplier bonus section, kinda awkward
         $single = array();
         $double = array();
         for($i=0; $i < count($lol); $i++) {
