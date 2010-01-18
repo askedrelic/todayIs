@@ -67,27 +67,19 @@ class Post{
     $i = 0;
     $stack = array ();
     $tag = "";
-
-    //$cmt{$i} = ' ';  //get rid of first tab char
-
-    //$cmt = utf8_encode ($cmt);
+    $out= "";
 
     while ($i < strlen($cmt)) {
         if ($cmt{$i} == '<') {
             $i++;
             if ($cmt{$i} != "/") {
                 $tagbody = substr ($cmt, $i, 25);
-                //$out .= $tagbody . "\n";
-
                 $token = strtok ($tagbody, " =\"<>");
-                //echo "here $token\n";
-                //$out .= $token . "\n";
+
                 if ($token == "i") {
-                    //array_push ($stack, "]/");
                     $out .= "/[";
                 }
                 else if ($token == "b") {
-                    //array_push ($stack, "]*");
                     $out .= "*[";
                 }
                 else if ($token == "u") {
@@ -95,9 +87,8 @@ class Post{
                 }
                 else if ($token == "span") {
                     $token = strtok (" =\"<>"); //CLASS
-                    //echo "here2 $token\n";
                     $token = strtok (" =\"<>"); //tag type
-                    //echo "here3 $token\n";
+
                     if ($token == "jt_blue") {
                         array_push ($stack, "}b");
                         $out .= "b{";
@@ -138,42 +129,26 @@ class Post{
                         array_push ($stack, "]q");
                         $out .= "q[";
                     }
-                } else if ($token == "br/") {
-                    //let other handle it
-
-                    //$out .= "<br />\n";
-                    //$out .= "\n";
-                } else if ($cmt{$i} == 'a') { // hyperlink
-                    //don't do anything?
-
-                    //$out .= "Debug: LINK";
-                    //while ($cmt{$i++} != '\"');
-                    //while ($cmt{$i} != '\"')
-                    //    $out .= $cmt{$i++};
-                    //while ($cmt{$i++} != '>');
-                }
+                } 
             } else { // it's a /closing tag
                 $tagbody = substr ($cmt, $i, 10);
                 $token = strtok ($tagbody, " =\"<>/");
-                //echo "here4 $token\n";
+
                 if ($token == "b") {
                     $out .= "]*";
-                    //array_pop ($stack);
                 } else if ($token == "i") {
                     $out .= "]/";
-                    //array_pop ($stack);
                 } else if ($token == "u") {
                     $out .= "]_";
-                    //array_pop ($stack);
                 } else if ($token == "span") {
                     $out .= array_pop ($stack);
                 }
             }
-            while ($cmt{$i++} != '>');
-            //if ($cmt{$i} == 's')
-        }
 
-        if ($cmt{$i} != '<') {
+            //fast foward to end of tag
+            while ($cmt{$i++} != '>'){};
+
+        } else {
             $out .= $cmt{$i};
             $i++;
         }
