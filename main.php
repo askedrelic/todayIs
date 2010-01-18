@@ -139,11 +139,11 @@ class PostBot{
     }
 }
 
-$a = new PostBot('askedrelic','xXxXxXxXxXx', 90, True);
+$a = new PostBot('askedrelic','xXxXxXxXxXx', 90, False);
 $a->setLatestChattyUrl();
 $a->setRootPost();
 
-// $a->addPost(new BirthdayPost());
+$a->addPost(new BirthdayPost());
 $a->addPost(new LolPost());
 $a->addPost(new TagPost());
 $a->addPost(new UnfPost());
