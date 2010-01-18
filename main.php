@@ -17,13 +17,15 @@ class PostBot{
 
     private $posts = array();
     private $sleeptime;
+    private $debugMode;
     private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
     private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
-    public function __construct($username, $password, $sleep){
+    public function __construct($username, $password, $sleep, $debug){
         $this->username = $username;
         $this->password = $password;
         $this->sleeptime = $sleep;
+        $this->debugMode = $debug;
     }
 
     public function setLatestChattyUrl() {
@@ -74,7 +76,9 @@ class PostBot{
         $this->parentId = $v->id;
 
         //Post URL to API
+        if(!$this->debugMode) {
         shell_exec("echo {$v->id} > /home/askedrelic/public_html/asktherelic.com/public/shack/todayis.txt");
+        }
     }
 
     public function addPost($post) {
@@ -85,13 +89,19 @@ class PostBot{
     public function makePosts() {
         //loop through all posts and post em!
         foreach($this->posts as $p) {
-            sleep($this->sleeptime);
+            if(!$this->debugMode) {
+                sleep($this->sleeptime);
+            }
             $result = self::post($p);
             if(preg_match("/Please wait a few minutes/i", $result)){
                 sleep(360);
                 self::post($p);
             }
         }
+    }
+
+    public function generateAwards() {
+
     }
 
     private function post($post) {
@@ -116,17 +126,24 @@ class PostBot{
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_URL, $this->postUrl);
-        $result = curl_exec($ch);
+        if(!$this->debugMode) {
+            $result = curl_exec($ch);
+        } else {
+            echo "post ---------------\n";
+            $post->setDebug();
+            echo $post->body."\n\n";
+            return NULL;
+        }
         curl_close($ch);
         return $result;
     }
 }
 
-$a = new PostBot('askedrelic','xXxXxXxXxXx', 90);
+$a = new PostBot('askedrelic','xXxXxXxXxXx', 90, True);
 $a->setLatestChattyUrl();
 $a->setRootPost();
 
-$a->addPost(new BirthdayPost());
+// $a->addPost(new BirthdayPost());
 $a->addPost(new LolPost());
 $a->addPost(new TagPost());
 $a->addPost(new UnfPost());

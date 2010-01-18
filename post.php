@@ -2,8 +2,11 @@
 class Post{ 
     public $body;
 
+    private $debugMode;
+
     public function __construct($body){
         $this->body = $body;
+        $this->debugMode = False;
     }
 
     public function encodePost(){
@@ -13,6 +16,11 @@ class Post{
     public function __toString(){
         return $this->body;
     }
+
+    public function setDebug(){
+        $this->debugMode = True;
+    }
+
 
     public function ord_suf($value){
         if(substr($value, -2, 2) == 11 || substr($value, -2, 2) == 12 || substr($value, -2, 2) == 13){
@@ -50,11 +58,15 @@ class Post{
     }
 
     protected function isNWS($id) {
+        if($this->debugMode) {
+            return true;
+        }
+        
         $url = "http://www.shackchatty.com/thread/{$id}.xml";
         $dom = file_get_dom($url);
         $ret = $dom->find("comment[id={$id}]", 0);
 
-        if($ret->category == "nws") {
+        if($ret && $ret->category == "nws") {
             return true;
         } else {
             return false;
