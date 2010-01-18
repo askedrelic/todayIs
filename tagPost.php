@@ -7,7 +7,7 @@ class TagPost extends Post {
         $result = parent::curlData($url);
         $tag = unserialize($result);
 
-        $body = "_[n{The Top Tags:}n]_ \nThis other thing that no one really uses!!!\n\n";
+        $body = "_[n[The Top Tags:]n]_ \nThis other thing that no one really uses!!!\n\n";
         for($i=0; $i < 3; $i++) {
            //cleanup text for findtag
            $bad = array("<div class=\"postbody\">" , "<br />", "<br/>"); 
