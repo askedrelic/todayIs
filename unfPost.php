@@ -7,6 +7,10 @@ class UnfPost extends Post {
         $result = parent::curlData($url);
         $unf = unserialize($result);
 
+        //set authors for awards
+        $author = array($unf[0]["author"]);
+        parent::setAuthors($author);
+
         $body = "_[r{The Top Unfs:}r]_ \nThis is all probably r{NWS}r, seriously, look before you click!\n\n";
         for($i=0; $i < 1; $i++) {
            //cleanup text for findtag
