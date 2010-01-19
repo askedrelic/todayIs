@@ -7,6 +7,7 @@ require 'lolPost.php';
 require 'tagPost.php';
 require 'unfPost.php';
 require 'randomPost.php';
+require 'awardPost.php';
 
 class PostBot{ 
     public $username;
@@ -102,73 +103,9 @@ class PostBot{
     }
 
     public function generateAwards() {
-        //setup authors names
-        $lols = array();
-        $tags = array();
-        $unf = array();
-        $inf = array();
-        foreach($this->posts as $p) {
-            if($p instanceof LolPost) {
-                //check against multiple lolers
-                $lols = array_unique($p->getAuthors());
-            }
-            if($p instanceof TagPost) {
-                $tags = array_unique($p->getAuthors());
-            }
-            if($p instanceof UnfPost) {
-                $unf = $p->getAuthors();
-            }
-            if($p instanceof InfPost) {
-                $inf = $p->getAuthors();
-            }
-            print_r($p->getAuthors());
-        }
+        $awardPost = new AwardPost($this->posts);
 
-        //check all lol/*combinations
-        foreach($lols as $lolAuthor) {
-            $awardWinner = False;
-            $award = "";
-            //append each award to the string
-            $award .= "LOL";
-            foreach($tags as $tagAuthor) {
-                if($lolAuthor == $tagAuthor) {
-                    $awardWinner = True;
-                    $award .= "TAG";
-                }
-            }
-            if($lolAuthor == $unf[0]) {
-                $awardWinner = True;
-                $award .= "UNF";
-            }
-            if($lolAuthor == $inf[0]) {
-                $awardWinner = True;
-                $award .= "INF";
-            }
-            if($awardWinner) {
-                echo $lolAuthor."is a ".$award." winner!\n";
-            }
-        }
-
-        //check all tag/*combinations
-        foreach($tags as $tagAuthor) {
-            $awardWinner = False;
-            $award = "TAG";
-            if($tagAuthor == $unf[0]) {
-                $awardWinner = True;
-                $award .= "UNF";
-            }
-            if($tagAuthor == $inf[0]) {
-                $awardWinner = True;
-                $award .= "INF";
-            }
-            if($awardWinner) {
-                echo $tagAuthor."is a ".$award." winner!\n";
-            } 
-        }
-
-        if($unf[0] == $inf[0]) {
-            echo $unf[0]." is a UNFINF winner!\n";
-        }
+        // self::post($p);
     }
 
     private function post($post) {
