@@ -2,7 +2,7 @@
 class AwardPost extends Post {
 
     public function __construct($posts) {
-        $body = "_[l[Daily Awards]l]_ \n \n";
+        $body = "_[l[Daily Awards:]l]_ \n \n";
 
         $lols = array();
         $tags = array();
