@@ -7,6 +7,7 @@ require 'lolPost.php';
 require 'tagPost.php';
 require 'unfPost.php';
 require 'randomPost.php';
+require 'awardPost.php';
 
 class PostBot{ 
     public $username;
@@ -51,6 +52,7 @@ class PostBot{
         $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
 
+        //TODO add custom today is items
         $cdate = mktime(0, 0, 0, 8, 13, 2009, 0);
         $today = time();
         $difference = $cdate - $today;
@@ -60,6 +62,7 @@ class PostBot{
             $body .= "HOLY SHIT IT'S QUAKECON TIME";
         }
         
+        //TODO create quote database to use here
         //$body .= "This is your life shackers, enjoy it.";
         $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | sed s/^X-//");
 
@@ -69,6 +72,7 @@ class PostBot{
 
         //get the latest chatty and parse for the last post by my username...
         //$dom = file_get_dom("http://chatty.elrepositorio.com/{$this->groupId}.xml");
+        //TODO check for empty groupid
         $dom = file_get_dom("http://shackchatty.com/{$this->groupId}.xml");
         $v = $dom->find("comment[author={$this->username}]",0);
 
@@ -101,7 +105,12 @@ class PostBot{
     }
 
     public function generateAwards() {
+        $awardPost = new AwardPost($this->posts);
 
+        if($awardPost->checkAwardWinner()) {
+            print "THERE ARE AWARDS!\n";
+            self::post($awardPost);
+        } self::post($p);
     }
 
     private function post($post) {
@@ -151,4 +160,5 @@ $a->addPost(new InfPost());
 //$a->addPost(new RandomPost());
 
 $a->makePosts();
+$a->generateAwards();
 ?>

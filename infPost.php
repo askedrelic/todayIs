@@ -7,6 +7,10 @@ class InfPost extends Post {
         $result = parent::curlData($url);
         $inf = unserialize($result);
 
+        //set authors for awards
+        $author = array($inf[0]["author"]);
+        parent::setAuthors($author);
+
         //$lol has methods body, author, tag_count, id
         #$body = "_[g{The Top INF:}g]_ \nThe b{smartest}b thing that was said yesterday. Get yourself to school. \n\n";
         $body = "_[b{The Top INF:}b]_ \n\"The thing that was posted yesterday that compelled the most amount of people to hit the inf button.\"\n\n";

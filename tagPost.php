@@ -7,6 +7,14 @@ class TagPost extends Post {
         $result = parent::curlData($url);
         $tag = unserialize($result);
 
+        //set authors for awards
+        $authors = array();
+        for($i=0; $i < 3; $i++) {
+            $author = $tag[$i]["author"];
+            array_push($authors, $author);
+        }
+        parent::setAuthors($authors);
+
         $body = "_[g{The Top Tags:}g]_ \nThis other thing that no one really uses!!!\n\n";
         for($i=0; $i < 3; $i++) {
            //cleanup text for findtag

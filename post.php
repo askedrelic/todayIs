@@ -3,6 +3,7 @@ class Post{
     public $body;
 
     private $debugMode;
+    private $authors;
 
     public function __construct($body){
         $this->body = $body;
@@ -21,6 +22,13 @@ class Post{
         $this->debugMode = True;
     }
 
+    public function getAuthors(){
+        return $this->authors;
+    }
+
+    protected function setAuthors($authors){
+        $this->authors = $authors;
+    }
 
     public function ord_suf($value){
         if(substr($value, -2, 2) == 11 || substr($value, -2, 2) == 12 || substr($value, -2, 2) == 13){
@@ -62,7 +70,12 @@ class Post{
             return true;
         }
         
-        $url = "http://www.shackchatty.com/thread/{$id}.xml";
+        #TODO: check if id exists before sending request
+        if(isset($id)) {
+            $url = "http://www.shackchatty.com/thread/{$id}.xml";
+        } else {
+            return false;
+        }
         $dom = file_get_dom($url);
         $ret = $dom->find("comment[id={$id}]", 0);
 

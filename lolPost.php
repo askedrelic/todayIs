@@ -26,6 +26,9 @@ class LolPost extends Post {
             $body .= "*[Multiloller bonus for y{{$key}}y!!!!]*\n\n";
         }
 
+        //set authors for awards
+        parent::setAuthors($single);
+
         //$lol has methods body, author, tag_count, id
         for($i=0; $i < count($lol); $i++) {
            //cleanup text for findtag
