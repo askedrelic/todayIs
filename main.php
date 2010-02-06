@@ -52,6 +52,7 @@ class PostBot{
         $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
 
+        //TODO add custom today is items
         $cdate = mktime(0, 0, 0, 8, 13, 2009, 0);
         $today = time();
         $difference = $cdate - $today;
@@ -61,6 +62,7 @@ class PostBot{
             $body .= "HOLY SHIT IT'S QUAKECON TIME";
         }
         
+        //TODO create quote database to use here
         //$body .= "This is your life shackers, enjoy it.";
         $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | sed s/^X-//");
 
@@ -105,7 +107,10 @@ class PostBot{
     public function generateAwards() {
         $awardPost = new AwardPost($this->posts);
 
-        // self::post($p);
+        if($awardPost->checkAwardWinner()) {
+            print "THERE ARE AWARDS!\n";
+            self::post($awardPost);
+        } self::post($p);
     }
 
     private function post($post) {
