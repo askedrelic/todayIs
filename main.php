@@ -159,6 +159,6 @@ $a->addPost(new UnfPost());
 $a->addPost(new InfPost());
 //$a->addPost(new RandomPost());
 
-$a->makePosts();
 $a->generateAwards();
+$a->makePosts();
 ?>
