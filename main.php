@@ -93,14 +93,8 @@ class PostBot{
     public function makePosts() {
         //loop through all posts and post em!
         foreach($this->posts as $p) {
-            if(!$this->debugMode) {
-                sleep($this->sleeptime);
-            }
-            $result = self::post($p);
-            if(preg_match("/Please wait a few minutes/i", $result)){
-                sleep(360);
-                self::post($p);
-            }
+            sleep($this->sleeptime);
+            self::post($p);
         }
     }
 
@@ -110,7 +104,7 @@ class PostBot{
         if($awardPost->checkAwardWinner()) {
             print "THERE ARE AWARDS!\n";
             self::post($awardPost);
-        } self::post($p);
+        }
     }
 
     private function post($post) {
@@ -139,12 +133,25 @@ class PostBot{
             $result = curl_exec($ch);
         } else {
             echo "post ---------------\n";
-            $post->setDebug();
+            // $post->setDebug();
             echo $post->body."\n\n";
             return NULL;
         }
+
+        $result2 = "";
+        //check once for PRL
+        if(preg_match("/Please wait a few minutes/i", $result)){
+            sleep(360);
+            $result2 = curl_exec($ch);
+        }
+
+        //check twice for PRL
+        if(preg_match("/Please wait a few minutes/i", $result2)){
+            sleep(360);
+            curl_exec($ch);
+        }
+
         curl_close($ch);
-        return $result;
     }
 }
 
