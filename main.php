@@ -22,7 +22,7 @@ class PostBot{
     private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
     private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
-    public function __construct($username, $password, $sleep, $debug){
+    public function __construct($username, $password, $sleep, $debug) {
         $this->username = $username;
         $this->password = $password;
         $this->sleeptime = $sleep;
@@ -35,17 +35,17 @@ class PostBot{
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, "Firefox 5.0");
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_URL, $this->latestUrl);
         $result = curl_exec($ch);
-        
+
         //pull last 5 digits of latest chatty URL
         $groupTemp = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
         //set the group on the post
         $this->groupId = substr($groupTemp, strlen($groupTemp)-5, strlen($groupTemp));
 
         curl_close($ch);
-        }
+    }
 
     public function setRootPost() {
         $p = new Post('');
@@ -61,7 +61,7 @@ class PostBot{
         } elseif ($difference == 0) {
             $body .= "HOLY SHIT IT'S QUAKECON TIME";
         }
-        
+
         //TODO create quote database to use here
         //$body .= "This is your life shackers, enjoy it.";
         $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | sed s/^X-//");
@@ -81,7 +81,7 @@ class PostBot{
 
         //Post URL to API
         if(!$this->debugMode) {
-        shell_exec("echo {$v->id} > /home/askedrelic/public_html/asktherelic.com/public/shack/todayis.txt");
+            shell_exec("echo {$v->id} > /home/askedrelic/public_html/asktherelic.com/public/shack/todayis.txt");
         }
     }
 
@@ -96,6 +96,7 @@ class PostBot{
             sleep($this->sleeptime);
             self::post($p);
         }
+        self::generateAwards();
     }
 
     public function generateAwards() {
@@ -125,7 +126,7 @@ class PostBot{
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
         curl_setopt($ch, CURLOPT_USERAGENT, "Firefox 5.0");
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
+        curl_setopt($ch, CURLOPT_TIMEOUT, 30);
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_URL, $this->postUrl);
@@ -166,6 +167,5 @@ $a->addPost(new UnfPost());
 $a->addPost(new InfPost());
 //$a->addPost(new RandomPost());
 
-$a->generateAwards();
 $a->makePosts();
 ?>
