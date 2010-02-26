@@ -22,21 +22,18 @@ class PostBot{
     private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
     private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
-    public function __construct($username, $password, $sleep, $larynxid) {
+    public function __construct($username, $password, $sleep) {
         $this->username = $username;
         $this->password = $password;
         $this->sleeptime = $sleep;
-        if(isset($larynxid)) {
-            $this->groupId = $larynxid;
-        } else {
-            print "SETTING LATTEST ID";
-            //self::setLatestChattyUrl();
-        }
+
+        //debug mode, set to post to specific chatty id
+        $this->groupId = self::getLatestChattyId();
 
         self::setRootPost();
     }
 
-    public function setLatestChattyUrl() {
+    public function getLatestChattyId() {
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_HEADER, 0);
         curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
@@ -48,10 +45,11 @@ class PostBot{
 
         //pull last 5 digits of latest chatty URL
         $groupTemp = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-        //set the group on the post
-        $this->groupId = substr($groupTemp, strlen($groupTemp)-5, strlen($groupTemp));
 
         curl_close($ch);
+
+        //return the group on the post
+        return substr($groupTemp, strlen($groupTemp)-5, strlen($groupTemp));
     }
 
     public function setRootPost() {
@@ -137,18 +135,14 @@ class PostBot{
         curl_setopt($ch, CURLOPT_URL, $this->postUrl);
         $result = curl_exec($ch);
 
+        print "result: \n\n".$result."\n";
         //check for PRL
         if(preg_match("/Please wait a few minutes/i", $result)){
-            print "sleeping for 360 seconds";
-            sleep(360);
+            print "sleeping for 420 seconds";
+            sleep(420);
             $result = curl_exec($ch);
-            $numTries = 0;
-            //try to make a post 5 more times
-            while(preg_match("/Please wait a few minutes/i", $result) || $numTries <= 5){
-                sleep(360);
-                $result = curl_exec($ch);
-            }
         }
+
         curl_close($ch);
     }
 
@@ -165,7 +159,7 @@ class PostBot{
     }
 }
 
-$a = new PostBot('askedrelic','xXxXxXxXxXx', 90, 6969);
+$a = new PostBot('askedrelic','xXxXxXxXxXx', 90);
 
 $a->addPost(new BirthdayPost());
 $a->addPost(new LolPost());

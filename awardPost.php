@@ -1,10 +1,8 @@
 <?php
 class AwardPost extends Post {
-    private $awardWinner;
+    private $awardWinner = False;
 
     public function __construct($posts) {
-        $this->awardWinner = False;
-
         $body = "_[l[Daily Awards:]l]_ \n\n";
 
         $lols = array();
