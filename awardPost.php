@@ -35,54 +35,52 @@ class AwardPost extends Post {
             // print_r($p->getAuthors());
         }
 
+        $winners = array();
         //check all lol/*combinations
         foreach($lols as $lolAuthor) {
-            $awardWinner = False;
             $award = "";
-            //append each award to the string
-            $award .= $loltag;
             foreach($tags as $tagAuthor) {
-                if($lolAuthor == $tagAuthor) {
-                    $awardWinner = True;
-                    $award .= $tagtag;
-                }
+            if($lolAuthor == $tagAuthor) {
+                $award .= $tagtag;
+            }
             }
             if($lolAuthor == $unfs[0]) {
-                $awardWinner = True;
                 $award .= $unftag;
             }
             if($lolAuthor == $infs[0]) {
-                $awardWinner = True;
                 $award .= $inftag;
             }
-            if($awardWinner) {
-                 $this->awardWinner = True;
-                 $body .= $lolAuthor." is a {$award} winner!\n";
+            if($award !== "") {
+                $body .= $lolAuthor." is a {$loltag}{$award} winner!\n";
+                array_push($winners, $lolAuthor);
+                //notify that someone won and this should be posted
+                $this->awardWinner = True;
             }
         }
 
         //check all tag/* combinations
         foreach($tags as $tagAuthor) {
-            $awardWinner = False;
-            $award = $tagtag;
+            $award = "";
             if($tagAuthor == $unfs[0]) {
-                $awardWinner = True;
                 $award .= $unftag;
             }
             if($tagAuthor == $infs[0]) {
-                $awardWinner = True;
                 $award .= $inftag;
             }
-            if($awardWinner) {
+            //if there is an award and this person has not already won an award
+            if($award !== "" and !in_array($lolAuthor, $winners)) {
+                $body .= $tagAuthor." is a {$tagtag}{$award} winner!\n";
+                array_push($winners, $lolAuthor);
+                //notify that someone won and this should be posted
                 $this->awardWinner = True;
-                $body .= $tagAuthor." is a {$award} winner!\n";
-            } 
+            }
         }
 
         //final unf/inf combo
-        if($unfs[0] == $infs[0]) {
-            $this->awardWinner = True;
+        if($unfs[0] == $infs[0] and !in_array($unfs[0], $winners)) {
             $body .= $unfs[0]." is a {$unftag}{$inftag} winner!\n";
+            //notify that someone won and this should be posted
+            $this->awardWinner = True;
         }
 
         $body .= "\n";

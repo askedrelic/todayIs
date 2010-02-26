@@ -77,7 +77,7 @@ class PostBot{
             $this->parentId = $v->id;
             print "root post: http://www.shacknews.com/laryn.x?id={$v->id}\n";
         } else {
-            print "bad parentid: {$v-id}\n";
+            print "bad parentid: {$v->id}\n";
             exit(1);
         }
 
