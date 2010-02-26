@@ -22,10 +22,12 @@ class PostBot{
     private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
     private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
-    public function __construct($username, $password, $sleep) {
+    public function __construct($username, $password) {
         $this->username = $username;
         $this->password = $password;
-        $this->sleeptime = $sleep;
+
+        //default sleeptime between posts
+        $this->sleeptime = 90;
 
         //debug mode, set to post to specific chatty id
         $this->groupId = self::getLatestChattyId();
@@ -158,14 +160,4 @@ class PostBot{
         }
     }
 }
-
-$a = new PostBot('askedrelic','xXxXxXxXxXx', 90);
-
-$a->addPost(new BirthdayPost());
-$a->addPost(new LolPost());
-$a->addPost(new TagPost());
-$a->addPost(new UnfPost());
-$a->addPost(new InfPost());
-
-$a->makePosts();
 ?>
