@@ -5,7 +5,7 @@ class AwardPost extends Post {
     public function __construct($posts) {
         $this->awardWinner = False;
 
-        $body = "_[l[Daily Awards:]l]_ \n \n";
+        $body = "_[l[Daily Awards:]l]_ \n\n";
 
         $lols = array();
         $tags = array();
@@ -31,7 +31,7 @@ class AwardPost extends Post {
             if($p instanceof InfPost) {
                 $infs = $p->getAuthors();
             }
-            //debug code
+            //debug
             // print_r($p->getAuthors());
         }
 
@@ -85,7 +85,7 @@ class AwardPost extends Post {
             $body .= $unfs[0]." is a {$unftag}{$inftag} winner!\n";
         }
 
-        $body .= "\n\n";
+        $body .= "\n";
 
         parent::__construct($body);
     }

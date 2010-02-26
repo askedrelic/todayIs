@@ -4,16 +4,20 @@ class BirthdayPost extends Post {
     public function __construct(){
         $body = "_[l[Shacker Birthdays:]l]_ \n";
 
-        //TODO: refactor out... maybe?
-        $dbh=mysql_connect ("localhost", "shack", "shack") or die ('I cannot connect to the database because: ' . mysql_error());
-        mysql_select_db ("shack");
+        //TODO: refactor out passwords/mysql connection details?
+        $connection = mysql_connect("localhost", "shack", "shack");
+        $numRows = 0;
+        if ($connection !== False) {
+            mysql_select_db("shack");
 
-        $query = "SELECT * FROM birthdays where dob like '%".date('m-d')."'";
-        $result = mysql_query($query) or die("I cannot query the database because: ".mysql_error());
+            $query = "SELECT * FROM birthdays where dob like '%".date('m-d')."'";
+            $result = mysql_query($query);
 
-        //see if we get a result or not
-        $num = mysql_numrows($result);
-        if($num > 0) {
+            //If there are rows/results
+            $numRows = mysql_numrows($result);
+        }
+
+        if($numRows > 0) {
             while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
                   $body .= "y{".$row["username"]."}y". self::agestring($row["dob"], $row["username"]) ."\n";
             }
@@ -27,6 +31,7 @@ class BirthdayPost extends Post {
     }
 
     private function getHoroscope() {
+        //This external API never works
         $m = date('m');
         $d = date('d');
         $url = "http://www.trynt.com/astrology-horoscope-api/v2/?m={$m}&d=${d}&s=&l=0&fo=php&f=0";
@@ -81,42 +86,41 @@ class BirthdayPost extends Post {
         array_push($fun, ": Buon Compleanno {$real_age}");
         array_push($fun, ": Yom Huledet Same'ach {$real_age}");
         array_push($fun, ": Joyeux Anniversaire Branleur");
-        array_push($fun, ": Tillykke med fodselsdagen {$real_age}");
         array_push($fun, ": Suk San Wan Keut");
         array_push($fun, ": Hyvaa syntymapaivaa");
         array_push($fun, ": Van harte gefeliciteerd met je verjaardag");
 
-        //important stuff
-        switch(TRUE) {
-        case ($real_age < 18):
-          $ret = " is one of the youngest here at {$real_age}";
-          break;
-        case ($real_age === 18):
-          $ret = " finally hits 18"; 
-          break;
-        case ($real_age === 21):
-          $ret = " turns 21. Prepare the drunk tank"; 
-          break;
-        case ($real_age === 25):
-          $ret = " can now rent a car at 25"; 
-          break;
-        case ($real_age === 30):
-          $ret = " better get some good loot for for turning 30"; 
-          break;
-        case ($real_age === 35):
-          $ret = " can now have a mid-life crisis at 35";
-          break;
-        case ($real_age === 40):
-          $ret = " is over the hill at 40"; 
-          break;
-        case ($real_age === 50):
-          $ret = " is old enough to be my dad at 50";
-          break;
-        case ($real_age > 50):
-          $ret = " is really old, but we still love them.";
-          break;
-        default:
-          $ret = $fun[mt_rand(0, (count($fun)-1))];
+        //Specific case for extra special birthdays or choose something at random
+        switch(True) {
+            case ($real_age < 18):
+            $ret = " is one of the youngest here at {$real_age}";
+            break;
+            case ($real_age === 18):
+            $ret = " finally hits 18";
+            break;
+            case ($real_age === 21):
+            $ret = " turns 21. Prepare the drunk tank";
+            break;
+            case ($real_age === 25):
+            $ret = " can now rent a car at 25";
+            break;
+            case ($real_age === 30):
+            $ret = " better get some good loot for for turning 30";
+            break;
+            case ($real_age === 35):
+            $ret = " can now have a mid-life crisis at 35";
+            break;
+            case ($real_age === 40):
+            $ret = " is over the hill at 40";
+            break;
+            case ($real_age === 50):
+            $ret = " is old enough to be my dad at 50";
+            break;
+            case ($real_age > 50):
+            $ret = " is really old, but we still love them.";
+            break;
+            default:
+            $ret = $fun[mt_rand(0, (count($fun)-1))];
         }
         $ret .= " /[!]/ ";
         return $ret;

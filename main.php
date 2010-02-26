@@ -22,11 +22,18 @@ class PostBot{
     private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
     private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
-    public function __construct($username, $password, $sleep, $debug) {
+    public function __construct($username, $password, $sleep, $larynxid) {
         $this->username = $username;
         $this->password = $password;
         $this->sleeptime = $sleep;
-        $this->debugMode = $debug;
+        if(isset($larynxid)) {
+            $this->groupId = $larynxid;
+        } else {
+            print "SETTING LATTEST ID";
+            //self::setLatestChattyUrl();
+        }
+
+        self::setRootPost();
     }
 
     public function setLatestChattyUrl() {
@@ -52,16 +59,6 @@ class PostBot{
         $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
 
-        //TODO add custom today is items
-        $cdate = mktime(0, 0, 0, 8, 13, 2009, 0);
-        $today = time();
-        $difference = $cdate - $today;
-        if ($difference > 0) { 
-            $body .= "There are /[OMG]/ ".floor($difference/60/60/24)." days until Quakecon!!!!\n";
-        } elseif ($difference == 0) {
-            $body .= "HOLY SHIT IT'S QUAKECON TIME";
-        }
-
         //TODO create quote database to use here
         //$body .= "This is your life shackers, enjoy it.";
         $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | sed s/^X-//");
@@ -70,41 +67,50 @@ class PostBot{
         //make first post
         self::post($p);
 
-        //get the latest chatty and parse for the last post by my username...
+        //get the latestchatty page and parse for the last post by my username...
         //$dom = file_get_dom("http://chatty.elrepositorio.com/{$this->groupId}.xml");
-        //TODO check for empty groupid
         $dom = file_get_dom("http://shackchatty.com/{$this->groupId}.xml");
         $v = $dom->find("comment[author={$this->username}]",0);
 
-        #TODO if no parent id, stop posting and email error
-        $this->parentId = $v->id;
+        #if no parent id is set or something crazy, stop posting and exit
+        if($v->id !== 0 and $v->id >= 1) {
+            $this->parentId = $v->id;
+            print "root post: http://www.shacknews.com/laryn.x?id={$v->id}\n";
+        } else {
+            print "bad parentid: {$v-id}\n";
+            exit(1);
+        }
 
         //Post URL to API
-        if(!$this->debugMode) {
-            shell_exec("echo {$v->id} > /home/askedrelic/public_html/asktherelic.com/public/shack/todayis.txt");
+        // if(!$this->debugMode) {
+        //     shell_exec("echo {$v->id} > /home/askedrelic/public_html/asktherelic.com/public/shack/todayis.txt");
+        // }
+    }
+
+    public function makePosts() {
+        self::addAwardPost();
+
+        //post all posts in the pool
+        foreach($this->posts as $p) {
+            print "sleeping for {$this->sleeptime} seconds\n";
+            sleep($this->sleeptime);
+            print "posting {$p}\n";
+            self::post($p);
+        }
+    }
+
+    public function addAwardPost() {
+        $awardPost = new AwardPost($this->posts);
+
+        if($awardPost->checkAwardWinner()) {
+            print "THERE ARE AWARDS!\n";
+            self::addPost($awardPost);
         }
     }
 
     public function addPost($post) {
         //add a post to the pool
         array_push($this->posts, $post);
-    }
-
-    public function makePosts() {
-        //loop through all posts and post em!
-        foreach($this->posts as $p) {
-            sleep($this->sleeptime);
-            self::post($p);
-        }
-    }
-
-    public function generateAwards() {
-        $awardPost = new AwardPost($this->posts);
-
-        if($awardPost->checkAwardWinner()) {
-            print "THERE ARE AWARDS!\n";
-            self::post($awardPost);
-        }
     }
 
     private function post($post) {
@@ -129,42 +135,43 @@ class PostBot{
         curl_setopt($ch, CURLOPT_POST, 1);
         curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
         curl_setopt($ch, CURLOPT_URL, $this->postUrl);
-        if(!$this->debugMode) {
-            $result = curl_exec($ch);
-        } else {
-            echo "post ---------------\n";
-            // $post->setDebug();
-            echo $post->body."\n\n";
-            return NULL;
-        }
+        $result = curl_exec($ch);
 
-        $result2 = "";
-        //check once for PRL
+        //check for PRL
         if(preg_match("/Please wait a few minutes/i", $result)){
+            print "sleeping for 360 seconds";
             sleep(360);
-            $result2 = curl_exec($ch);
+            $result = curl_exec($ch);
+            $numTries = 0;
+            //try to make a post 5 more times
+            while(preg_match("/Please wait a few minutes/i", $result) || $numTries <= 5){
+                sleep(360);
+                $result = curl_exec($ch);
+            }
         }
-
-        //check twice for PRL
-        if(preg_match("/Please wait a few minutes/i", $result2)){
-            sleep(360);
-            curl_exec($ch);
-        }
-
         curl_close($ch);
+    }
+
+    private function insertCustomItems() {
+        //TODO add custom today is items
+        $cdate = mktime(0, 0, 0, 8, 13, 2009, 0);
+        $today = time();
+        $difference = $cdate - $today;
+        if ($difference > 0) {
+            $body .= "There are /[OMG]/ ".floor($difference/60/60/24)." days until Quakecon!!!!\n";
+        } elseif ($difference == 0) {
+            $body .= "HOLY SHIT IT'S QUAKECON TIME";
+        }
     }
 }
 
-$a = new PostBot('askedrelic','xXxXxXxXxXx', 90, False);
-$a->setLatestChattyUrl();
-$a->setRootPost();
+$a = new PostBot('askedrelic','xXxXxXxXxXx', 90, 6969);
 
 $a->addPost(new BirthdayPost());
 $a->addPost(new LolPost());
 $a->addPost(new TagPost());
 $a->addPost(new UnfPost());
 $a->addPost(new InfPost());
-//$a->addPost(new RandomPost());
 
 $a->makePosts();
 ?>
