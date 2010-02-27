@@ -27,7 +27,7 @@ class PostBot{
         $this->password = $password;
 
         //default sleeptime between posts
-        $this->sleeptime = 90;
+        $this->sleeptime = 120;
 
         //debug mode, set to post to specific chatty id
         $this->groupId = self::getLatestChattyId();
