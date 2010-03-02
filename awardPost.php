@@ -81,6 +81,8 @@ class AwardPost extends Post {
             $this->awardWinner = True;
         }
 
+        print_r($winners);
+
         $body .= "\n";
 
         parent::__construct($body);
