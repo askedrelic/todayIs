@@ -6,7 +6,6 @@ require 'infPost.php';
 require 'lolPost.php';
 require 'tagPost.php';
 require 'unfPost.php';
-require 'randomPost.php';
 require 'awardPost.php';
 
 class PostBot{ 
