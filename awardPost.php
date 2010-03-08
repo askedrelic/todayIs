@@ -66,7 +66,7 @@ class AwardPost extends Post {
                 $award .= $inftag;
             }
             //if there is an award and this person has not already won an award
-            if($award !== "" and !in_array($lolAuthor, $winners)) {
+            if($award !== "" and !in_array($tagAuthor, $winners)) {
                 $body .= $tagAuthor." is a {$tagtag}{$award} winner!\n";
                 array_push($winners, $lolAuthor);
                 //notify that someone won and this should be posted
