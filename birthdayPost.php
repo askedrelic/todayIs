@@ -81,7 +81,9 @@ class BirthdayPost extends Post {
         array_push($fun, " HAPPY BURFDAY {$real_age}");
         array_push($fun, " OMGH{$firstchar}D :O");
 
+        //foreign birthdays for kicks
         array_push($fun, ": Feliz Cumpleaños {$real_age}");
+        array_push($fun, ": Selamat Hari Jadi {$real_age}");
         array_push($fun, ": Alles Gute zum Geburtstag {$real_age}");
         array_push($fun, ": Buon Compleanno {$real_age}");
         array_push($fun, ": Yom Huledet Same'ach {$real_age}");
