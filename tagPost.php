@@ -24,11 +24,16 @@ class TagPost extends Post {
            $post = html_entity_decode($post);
            $post = parent::findtag($post);
            $body .= "_[By: y{{$tag[$i]["author"]}}y with [{$tag[$i]["tag_count"]} tagz]]_ s[http://www.shacknews.com/laryn.x?id={$tag[$i]["id"]}]s \n";
+           $post_id = $tag[$i]["id"];
            //If the post is tagged NWS or has nws literally in it, notify the public
-           if(preg_match('/nws/i', $post) || parent::isNWS($tag[$i]["id"])) {
+           if(preg_match('/nws/i', $post) || parent::isNWS($post_id)) {
                $body .= "r{!!!          (Possible NWS Post detected!)          !!!}r \n";
            }
-           $body .= $post;
+           if(!parent::isNuked($post_id)) {
+               $body .= $post;
+           } else {
+               $body .= Post::$NUKED_TEXT;
+           }
            $body .= "\n\n";
         }
         $body .= "s[Want to tag too? http://www.lmnopc.com/greasemonkey/shacklol/]s\n";

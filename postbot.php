@@ -1,14 +1,18 @@
 <?php
-require 'simple_html_dom.php';
-require 'post.php';
-require 'birthdayPost.php';
-require 'infPost.php';
-require 'lolPost.php';
-require 'tagPost.php';
-require 'unfPost.php';
-require 'awardPost.php';
 
-class PostBot{ 
+//electroly's thread parsing
+require_once 'include/Global.php';
+
+require_once 'post.php';
+require_once 'birthdayPost.php';
+require_once 'infPost.php';
+require_once 'lolPost.php';
+require_once 'tagPost.php';
+require_once 'unfPost.php';
+require_once 'awardPost.php';
+
+
+class PostBot{
     public $username;
     public $password;
 
@@ -29,7 +33,8 @@ class PostBot{
         $this->sleeptime = 120;
 
         //debug mode, set to post to specific chatty id
-        $this->groupId = self::getLatestChattyId();
+        // $this->groupId = self::getLatestChattyId();
+        $this->groupId = 3000;
 
         self::setRootPost();
     }
@@ -66,17 +71,17 @@ class PostBot{
         //make first post
         self::post($p);
 
-        //get the latestchatty page and parse for the last post by my username...
-        //$dom = file_get_dom("http://chatty.elrepositorio.com/{$this->groupId}.xml");
-        $dom = file_get_dom("http://shackchatty.com/{$this->groupId}.xml");
-        $v = $dom->find("comment[author={$this->username}]",0);
+        sleep(5);
 
-        #if no parent id is set or something crazy, stop posting and exit
-        if($v->id !== 0 and $v->id >= 1) {
-            $this->parentId = $v->id;
-            print "root post: http://www.shacknews.com/laryn.x?id={$v->id}\n";
+        //get the latestchatty page and parse for the last post by my username...
+        $parent_id = self::getIdFromChatty($this->username, $this->groupId);
+
+        #if no parent id is set, stop posting and exit
+        if($parent_id !== -1) {
+            $this->parentId = $parent_id;
+            print "root post: http://www.shacknews.com/laryn.x?id={$parent_id}\n";
         } else {
-            print "bad parentid: {$v->id}\n";
+            print "bad parentid: {$parent_id}\n";
             exit(1);
         }
 
@@ -110,6 +115,21 @@ class PostBot{
     public function addPost($post) {
         //add a post to the pool
         array_push($this->posts, $post);
+    }
+
+    private function getIdFromChatty($username, $id) {
+        $parser = new ChattyParser();
+        $names = $parser->getStory($id,0);
+        for($i = 0; $i < count($names); $i++) {
+            $thread_author = $names['threads'][$i]['author'];
+            $thread_id = $names['threads'][$i]['id'];
+
+            if(strcasecmp($username, $thread_author) == 0) {
+                return $thread_id;
+            } else {
+                return -1;
+            }
+        }
     }
 
     private function post($post) {

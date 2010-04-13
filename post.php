@@ -5,6 +5,8 @@ class Post{
     private $debugMode;
     private $authors;
 
+    public static $NUKED_TEXT = 'MULTISYNC FILTER WOOOP WOOOOP. \n I CANNOT SHOW YOU THIS TEXT. WOOOOP\n';
+
     public function __construct($body){
         $this->body = $body;
         $this->debugMode = False;
@@ -65,23 +67,26 @@ class Post{
         return $result;
     }
 
-    protected function isNWS($id) {
-        if($this->debugMode) {
-            return true;
-        }
-        
-        #TODO: check if id exists before sending request
-        if(isset($id)) {
-            $url = "http://www.shackchatty.com/thread/{$id}.xml";
-        } else {
-            return false;
-        }
-        $dom = file_get_dom($url);
-        $ret = $dom->find("comment[id={$id}]", 0);
+    protected function getCategory($id) {
+        $parser = new ThreadParser();
+        $thread = $parser->getThread($id);
+        return $thread['category'];
+    }
 
-        if($ret && $ret->category == "nws") {
-            return true;
-        } else {
+    protected function isNWS($id) {
+        return (self::getCategory($id) === 'nws') ? true : false;
+    }
+
+
+    protected function isNuked($id) {
+        try {
+            return (self::getCategory($id) === 'nuked') ? true : false;
+        } catch (Exception $e) {
+            //probably a nuked post, but double-check
+            $page_data = trim(self::curlData('http://www.shacknews.com/laryn.x?id={$id}'));
+            if(strcmp($page_data, "Bad id.")) {
+                return true;
+            }
             return false;
         }
     }
