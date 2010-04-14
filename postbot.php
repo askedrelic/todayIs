@@ -33,8 +33,7 @@ class PostBot{
         $this->sleeptime = 120;
 
         //debug mode, set to post to specific chatty id
-        // $this->groupId = self::getLatestChattyId();
-        $this->groupId = 3000;
+        $this->groupId = self::getLatestChattyId();
 
         self::setRootPost();
     }
@@ -70,8 +69,6 @@ class PostBot{
         $p->body = $body;
         //make first post
         self::post($p);
-
-        sleep(5);
 
         //get the latestchatty page and parse for the last post by my username...
         $parent_id = self::getIdFromChatty($this->username, $this->groupId);
@@ -120,16 +117,18 @@ class PostBot{
     private function getIdFromChatty($username, $id) {
         $parser = new ChattyParser();
         $names = $parser->getStory($id,0);
+        //check all latestchatty threads
         for($i = 0; $i < count($names); $i++) {
             $thread_author = $names['threads'][$i]['author'];
             $thread_id = $names['threads'][$i]['id'];
 
+            //return for the the first matching username thread
             if(strcasecmp($username, $thread_author) == 0) {
                 return $thread_id;
-            } else {
-                return -1;
             }
         }
+        //if username can't be found in latestchatty
+        return -1;
     }
 
     private function post($post) {
