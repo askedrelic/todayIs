@@ -25,15 +25,19 @@ class PostBot{
     private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
     private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
-    public function __construct($username, $password) {
+    public function __construct($username, $password, $sleeptime=120, $group=NULL) {
         $this->username = $username;
         $this->password = $password;
 
         //default sleeptime between posts
-        $this->sleeptime = 120;
+        $this->sleeptime = $sleeptime;
 
-        //debug mode, set to post to specific chatty id
-        $this->groupId = self::getLatestChattyId();
+        //post to specific story id
+        if($group === NULL) {
+            $this->groupId = self::getLatestChattyId();
+        } else {
+            $this->groupId = $group;
+        }
 
         self::setRootPost();
     }
@@ -73,7 +77,7 @@ class PostBot{
         //get the latestchatty page and parse for the last post by my username...
         $parent_id = self::getIdFromChatty($this->username, $this->groupId);
 
-        #if no parent id is set, stop posting and exit
+        //if no parent id is set, stop posting and exit
         if($parent_id !== -1) {
             $this->parentId = $parent_id;
             print "root post: http://www.shacknews.com/laryn.x?id={$parent_id}\n";

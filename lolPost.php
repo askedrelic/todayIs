@@ -39,7 +39,7 @@ class LolPost extends Post {
             $post = parent::findtag($post);
             $star = "";
             //If the first post, give it unicode stars
-            if($i == 0) {
+            if($i === 0) {
                 $star = "q[q[".html_entity_decode("&#9733;", ENT_NOQUOTES, 'UTF-8')."]q]q";
             }
             $body .= "_[{$star} By: y{{$lol[$i]["author"]}}y with [{$lol[$i]["tag_count"]} lolz] {$star}]_ s[http://www.shacknews.com/laryn.x?id={$lol[$i]["id"]}]s \n";

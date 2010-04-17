@@ -176,8 +176,15 @@ class Post{
             }
 
             //fast foward to end of tag
-            while ($cmt{$i++} != '>'){};
-
+            $mark = $i;
+            while ($cmt{$i++} != '>'){
+                //ghetto code to stop unclosed < at of line
+                if($i >= strlen($cmt)) {
+                    $out .= $cmt{$mark-1};
+                    $i = $mark;
+                    break;
+                }
+            }
         } else {
             $out .= $cmt{$i};
             $i++;
