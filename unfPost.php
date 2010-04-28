@@ -1,5 +1,6 @@
 <?php
 class UnfPost extends Post {
+    public $tag = "_[r{UNF}r]_";
 
     public function __construct(){
         $yesterday = date( 'm/d/Y', time() - 86400 );
@@ -14,7 +15,7 @@ class UnfPost extends Post {
         $body = "_[r{The Top Unfs:}r]_ \nThis is all probably r{NWS}r, seriously, look before you click!\n\n";
         for($i=0; $i < 1; $i++) {
            //cleanup text for findtag
-           $bad = array("<div class=\"postbody\">" , "<br />", "<br/>"); 
+           $bad = array("<div class=\"postbody\">" , "<br />", "<br/>");
            $good = array("", "\n", "\n");
            $post = str_ireplace($bad, $good, $unf[$i]["body"]);
            $post = html_entity_decode($post);

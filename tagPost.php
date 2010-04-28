@@ -1,5 +1,6 @@
 <?php
 class TagPost extends Post {
+    public $tag = "_[g{TAG}g]_";
 
     public function __construct(){
         $yesterday = date( 'm/d/Y', time() - 86400 );

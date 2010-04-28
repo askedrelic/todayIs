@@ -1,6 +1,8 @@
 <?php
 class LolPost extends Post {
 
+    public $tag = "_[n[LOL]n]_";
+
     public function __construct(){
         $yesterday = date( 'm/d/Y', time() - 86400 );
         $url = "http://www.lmnopc.com/greasemonkey/shacklol/api.php?format=php&date={$yesterday}&tag=lol";

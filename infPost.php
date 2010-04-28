@@ -1,5 +1,6 @@
 <?php
 class InfPost extends Post {
+    public $tag = "_[b{INF}b]_";
 
     public function __construct(){
         $yesterday = date( 'm/d/Y', time() - 86400 );
