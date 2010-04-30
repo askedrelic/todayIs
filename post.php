@@ -3,7 +3,7 @@ class Post{
     public $body;
 
     private $debugMode;
-    private $authors;
+    private $authors = array();
 
     public static $NUKED_TEXT = 'MULTISYNC FILTER WOOOP WOOOOP. \n I CANNOT SHOW YOU THIS TEXT. WOOOOP\n';
 
