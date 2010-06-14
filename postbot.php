@@ -69,7 +69,7 @@ class PostBot{
         $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | sed s/^X-//");
 
         //TODO create quote database to use here
-        $body .= "\n";
+        $body .= "\n\n";
         $body .= "This is the Best Of shacknews:";
 
         $p->body = $body;
