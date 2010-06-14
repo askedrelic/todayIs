@@ -66,9 +66,11 @@ class PostBot{
         $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
 
-        //TODO create quote database to use here
-        //$body .= "This is your life shackers, enjoy it.";
         $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | sed s/^X-//");
+
+        //TODO create quote database to use here
+        $body .= "\n";
+        $body .= "This is the Best Of shacknews:";
 
         $p->body = $body;
         //make first post
