@@ -74,7 +74,12 @@ class Post{
     }
 
     protected function isNWS($id) {
-        return (self::getCategory($id) === 'nws') ? true : false;
+        //catch possible nuked nws posts
+        try {
+            return (self::getCategory($id) === 'nws') ? true : false;
+        } catch (Exception $e) {
+            return false;
+        }
     }
 
 
