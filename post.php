@@ -5,7 +5,7 @@ class Post{
     private $debugMode;
     private $authors = array();
 
-    public static $NUKED_TEXT = 'MULTISYNC FILTER WOOOP WOOOOP. \n I CANNOT SHOW YOU THIS TEXT. WOOOOP\n';
+    public static $NUKED_TEXT = "MULTISYNC FILTER WOOOP WOOOOP. \n I CANNOT SHOW YOU THIS TEXT. WOOOOP\n";
 
     public function __construct($body){
         $this->body = $body;
