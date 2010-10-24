@@ -69,7 +69,7 @@ class BirthdayPost extends Post {
         array_push($fun, " turns {$real_age}");
         array_push($fun, " is now {$real_age}");
         array_push($fun, " has can my birthday wishes for their {$ord_real_age}");
-        array_push($fun, " IS IN UR BIRTHDAY CAKE FOR THIER {$ord_real_age}");
+        array_push($fun, " IS IN UR BIRTHDAY CAKE FOR THEIR {$ord_real_age}");
         array_push($fun, " is so so old at {$real_age}");
         array_push($fun, " better have a great time for their {$ord_real_age}");
         array_push($fun, " happy birthday for your {$ord_real_age}");
