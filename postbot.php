@@ -70,7 +70,8 @@ class PostBot{
 
         //TODO create quote database to use here
         $body .= "\n\n";
-        $body .= "This is the Best Of shacknews:";
+        // $body .= "This is the Best Of shacknews:";
+        $body .= $this->insertDukeRelease();
 
         $p->body = $body;
         //make first post
@@ -172,15 +173,14 @@ class PostBot{
         curl_close($ch);
     }
 
-    private function insertCustomItems() {
-        //TODO add custom today is items
-        $cdate = mktime(0, 0, 0, 8, 13, 2009, 0);
+    private function insertDukeRelease() {
+        $launch_date = mktime(0, 0, 0, 5, 3, 2011, 0);
         $today = time();
-        $difference = $cdate - $today;
+        $difference = $launch_date - $today;
         if ($difference > 0) {
-            $body .= "There are /[OMG]/ ".floor($difference/60/60/24)." days until Quakecon!!!!\n";
+            return "There are /[OMG]/ ". floor($difference/60/60/24) ." days until DNF is released!\n";
         } elseif ($difference == 0) {
-            $body .= "HOLY SHIT IT'S QUAKECON TIME";
+            return "HOLY SHIT IT'S TIME TO KICK ASS AND CHEW BUBBLE GUM! DNF IS RELEASED!!";
         }
     }
 }
