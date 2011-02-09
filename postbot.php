@@ -180,7 +180,18 @@ class PostBot{
         if ($difference > 0) {
             return "There are /[OMG]/ ". ceil($difference/60/60/24) ." days until DNF is released!\n";
         } elseif ($difference == 0) {
-            return "HOLY SHIT IT'S TIME TO KICK ASS AND CHEW BUBBLE GUM! DNF IS RELEASED!!";
+            return "HOLY SHIT IT'S TIME TO KICK ASS AND CHEW BUBBLE GUM! DNF IS RELEASED!!\n";
+        }
+    }
+
+    private function insertShackconRelease() {
+        $launch_date = mktime(0, 0, 0, 7, 8, 2011, 0);
+        $today = time();
+        $difference = $launch_date - $today;
+        if ($difference > 0) {
+            return "There are ". ceil($difference/60/60/24) ." days until Shackcon\n";
+        } elseif ($difference == 0) {
+            return "ZOMG VEGAS SHACKCON!!!\n";
         }
     }
 }
