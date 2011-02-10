@@ -72,6 +72,7 @@ class PostBot{
         $body .= "\n\n";
         // $body .= "This is the Best Of shacknews:";
         $body .= $this->insertDukeRelease();
+        $body .= $this->insertShackconRelease();
 
         $p->body = $body;
         //make first post
