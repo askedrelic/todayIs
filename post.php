@@ -67,10 +67,14 @@ class Post{
         return $result;
     }
 
+    /**
+     * @deprecated BROKEN currently in nuShack
+     */
     protected function getCategory($id) {
-        $parser = new ThreadParser();
-        $thread = $parser->getThread($id);
-        return $thread['category'];
+        //$parser = new ThreadParser();
+        //$thread = $parser->getThread($id);
+        //return $thread['category'];
+        return "none";
     }
 
     protected function isNWS($id) {

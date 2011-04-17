@@ -2,6 +2,7 @@
 
 //electroly's thread parsing
 require_once 'include/Global.php';
+require_once 'shackapi.php';
 
 require_once 'post.php';
 require_once 'birthdayPost.php';
@@ -12,53 +13,27 @@ require_once 'unfPost.php';
 require_once 'awardPost.php';
 
 
-class PostBot{
+class PostBot {
     public $username;
     public $password;
 
     public $parentId;
-    public $groupId;
 
     private $posts = array();
     private $sleeptime;
     private $debugMode;
-    private $latestUrl = 'http://www.shacknews.com/latestchatty.x';
-    private $postUrl = 'http://www.shacknews.com/extras/post_laryn_iphone.x';
 
-    public function __construct($username, $password, $sleeptime=120, $group=NULL) {
+    public function __construct($username, $password, $sleeptime=120, $parentId = null) {
         $this->username = $username;
         $this->password = $password;
 
         //default sleeptime between posts
         $this->sleeptime = $sleeptime;
 
-        //post to specific story id
-        if($group === NULL) {
-            $this->groupId = self::getLatestChattyId();
-        } else {
-            $this->groupId = $group;
-        }
+        //override parentId if testing
+        $this->parentId = $parentId;
 
-        self::setRootPost();
-    }
-
-    public function getLatestChattyId() {
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, "Firefox 5.0");
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-        curl_setopt($ch, CURLOPT_URL, $this->latestUrl);
-        $result = curl_exec($ch);
-
-        //pull last 5 digits of latest chatty URL
-        $groupTemp = curl_getinfo($ch, CURLINFO_EFFECTIVE_URL);
-
-        curl_close($ch);
-
-        //return the group on the post
-        return substr($groupTemp, strlen($groupTemp)-5, strlen($groupTemp));
+        $this->setRootPost();
     }
 
     public function setRootPost() {
@@ -75,36 +50,19 @@ class PostBot{
         $body .= $this->insertShackconRelease();
 
         $p->body = $body;
-        //make first post
-        self::post($p);
-
-        //get the latestchatty page and parse for the last post by my username...
-        $parent_id = self::getIdFromChatty($this->username, $this->groupId);
-
-        //if no parent id is set, stop posting and exit
-        if($parent_id !== -1) {
-            $this->parentId = $parent_id;
-            print "root post: http://www.shacknews.com/laryn.x?id={$parent_id}\n";
-        } else {
-            print "bad parentid: {$parent_id}\n";
-            exit(1);
-        }
-
-        //Post URL to API
-        // if(!$this->debugMode) {
-        //     shell_exec("echo {$v->id} > /home/askedrelic/public_html/asktherelic.com/public/shack/todayis.txt");
-        // }
+        //make first post and override parentId
+        $this->parentId = $this->post($p);
     }
 
     public function makePosts() {
-        self::addAwardPost();
+        $this->addAwardPost();
 
         //post all posts in the pool
         foreach($this->posts as $p) {
             print "sleeping for {$this->sleeptime} seconds\n";
             sleep($this->sleeptime);
             print "posting {$p}\n";
-            self::post($p);
+            print "http://www.shacknews.com/chatty?id=" . $this->post($p);
         }
     }
 
@@ -113,7 +71,7 @@ class PostBot{
 
         if($awardPost->checkAwardWinner()) {
             print "THERE ARE AWARDS!\n";
-            self::addPost($awardPost);
+            $this->addPost($awardPost);
         }
     }
 
@@ -122,60 +80,20 @@ class PostBot{
         array_push($this->posts, $post);
     }
 
-    private function getIdFromChatty($username, $id) {
-        $parser = new ChattyParser();
-        $names = $parser->getStory($id,0);
-        //check all latestchatty threads
-        for($i = 0; $i < count($names); $i++) {
-            $thread_author = $names['threads'][$i]['author'];
-            $thread_id = $names['threads'][$i]['id'];
-
-            //return for the the first matching username thread
-            if(strcasecmp($username, $thread_author) == 0) {
-                return $thread_id;
+    private function post($post) {
+        try {
+            return ShackApi::post($this->username, $this->password, $post->body, $this->parentId);
+        } catch (Exception $e) {
+            while (true) {
+                print "sleeping 300 secs\n";
+                sleep(300);
+                return ShackApi::post($this->username, $this->password, $post->body, $this->parentId);
             }
         }
-        //if username can't be found in latestchatty
-        return -1;
-    }
-
-    private function post($post) {
-        //    * iuser: username
-        //    * ipass: password
-        //    * parent: The ID of the post that is being replied to. Leave blank it its a new root post.
-        //    * group: The story ID this post is getting attached to.
-        //    * body: The text content of the comment.
-        $body = $post->encodePost();
-        $fields = 'iuser='.urlencode($this->username);
-        $fields .= '&ipass='.urlencode($this->password);
-        $fields .= '&parent='.urlencode($this->parentId);
-        $fields .= '&group='.urlencode($this->groupId);
-        $fields .= '&body='.$post->encodePost();
-
-        $ch = curl_init();
-        curl_setopt($ch, CURLOPT_HEADER, 0);
-        curl_setopt($ch, CURLOPT_FOLLOWLOCATION, 1);
-        curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-        curl_setopt($ch, CURLOPT_USERAGENT, "Firefox 5.0");
-        curl_setopt($ch, CURLOPT_TIMEOUT, 60);
-        curl_setopt($ch, CURLOPT_POST, 1);
-        curl_setopt($ch, CURLOPT_POSTFIELDS, $fields);
-        curl_setopt($ch, CURLOPT_URL, $this->postUrl);
-        $result = curl_exec($ch);
-
-        print "result: \n\n".$result."\n";
-        //check for PRL
-        if(preg_match("/Please wait a few minutes/i", $result)){
-            print "sleeping for 420 seconds";
-            sleep(420);
-            $result = curl_exec($ch);
-        }
-
-        curl_close($ch);
     }
 
     private function insertDukeRelease() {
-        $launch_date = mktime(0, 0, 0, 5, 3, 2011, 0);
+        $launch_date = mktime(0, 0, 0, 6, 14, 2011, 0);
         $today = time();
         $difference = $launch_date - $today;
         if ($difference > 0) {
