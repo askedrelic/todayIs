@@ -41,6 +41,8 @@ class PostBot {
         $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
 
+        print $body;
+
         $body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | sed s/^X-//");
 
         //TODO create quote database to use here
