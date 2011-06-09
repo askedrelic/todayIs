@@ -63,6 +63,7 @@ class PostBot {
             sleep($this->sleeptime);
             print "posting {$p}\n";
             print "http://www.shacknews.com/chatty?id=" . $this->post($p);
+            print "\n";
         }
     }
 
