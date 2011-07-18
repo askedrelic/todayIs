@@ -12,6 +12,8 @@ require_once 'tagPost.php';
 require_once 'unfPost.php';
 require_once 'awardPost.php';
 
+//set timezone to work with DateTime objects
+date_default_timezone_set('America/New_York');
 
 class PostBot {
     public $username;
@@ -46,7 +48,6 @@ class PostBot {
         //TODO create quote database to use here
         $body .= "\n\n";
         // $body .= "This is the Best Of shacknews:";
-        $body .= $this->insertDukeRelease();
         $body .= $this->insertShackconRelease();
 
         $p->body = $body;
@@ -92,24 +93,15 @@ class PostBot {
         }
     }
 
-    private function insertDukeRelease() {
-        $launch_date = mktime(0, 0, 0, 6, 14, 2011, 0);
-        $today = time();
-        $difference = $launch_date - $today;
-        if ($difference > 0) {
-            return "There are /[OMG]/ ". ceil($difference/60/60/24) ." days until DNF is released!\n";
-        } elseif ($difference == 0) {
-            return "HOLY SHIT IT'S TIME TO KICK ASS AND CHEW BUBBLE GUM! DNF IS RELEASED!!\n";
-        }
-    }
-
     private function insertShackconRelease() {
-        $launch_date = mktime(0, 0, 0, 7, 8, 2011, 0);
-        $today = time();
-        $difference = $launch_date - $today;
-        if ($difference > 0) {
-            return "There are ". ceil($difference/60/60/24) ." days until Shackcon\n";
-        } elseif ($difference == 0) {
+        $launch_date = new DateTime('2012-07-08');
+        $today = new DateTime("now");
+        $interval = $launch_date->diff($today);
+        if ($interval->d > 1) {
+            return "There are ". $interval->d ." days until Shackcon 2012!\n";
+        if ($interval->d == 1) {
+            return "There is ". $interval->d ." day until Shackcon 2012!\n";
+        } elseif ($interval->d == 0) {
             return "ZOMG VEGAS SHACKCON!!!\n";
         }
     }
