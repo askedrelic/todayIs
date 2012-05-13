@@ -27,7 +27,11 @@ class UnfPost extends Post {
                $body .= "r{!!!          (Possible NWS Post detected!)          !!!}r \n";
            }
            if(!parent::isNuked($post_id)) {
-               $body .= $post;
+               if (strlen($post) > 700) {
+                   $body .= substr($post, 0, 700) . '...';
+               } else {
+                   $body .= $post;
+               }
            } else {
                $body .= Post::$NUKED_TEXT;
            }
