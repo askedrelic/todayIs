@@ -62,7 +62,10 @@ class PostBot {
         // $body .= "This is the Best Of shacknews:";
         //$body .= $this->insertShackconRelease();
         
-        $body .= $this->insertBrownies();
+        $snacks = $this->insertBrownies();
+        if (!empty($snacks)) {
+            $body .= $snacks;
+        }
 
         $p->body = $body;
         //make first post and override parentId
@@ -109,36 +112,25 @@ class PostBot {
     }
 
     private function insertBrownies() {
-        $today = new DateTime("now");
-        $day = $today->format("Y-m-d");                                                                                                                                                                                                                                                 
+        //sign unix > php
+        $snacks = system('curl -s http://www.defconyum.com/ | grep -oiE "<h1.*?/h1>" | sed -e "s/<[^>]*>//g"');
+        if (empty($snacks)) {
+            return "";
+        }
 
         $ret = "\n";
         $ret .= "HEY p[MULTISYNC]p buy some delicious ";
-
-        if ($day == "2012-10-17") {
-            $ret .= "Today only, r{Chocolate Overload Espresso Brownies}r";
-        } elseif ($day == "2012-10-18") {
-            $ret .= "Today only, r{Salted Caramel Chocolate Cookies}r";
-        } elseif ($day == "2012-10-19") {
-            $ret .= "r{Kiss of Chocolate Cherry Cookies}r";
-        } elseif ($day == "2012-10-22") {
-            $ret .= "r{Chewy Lemon Snowball Cookies}r";
-        } elseif ($day == "2012-10-23") {
-            $ret .= "r{Butterfinger Blast Crunchy Cookies}r";
-        } elseif ($day == "2012-10-24") {
-            $ret .= "r{Pumpkin Chocolate Chip Cake Bars}r";
-        } elseif ($day == "2012-10-25") {
-            $ret .= "r{Apple Cider Caramel Cookies}r";
-        } elseif ($day == "2012-10-30") {
-            $ret .= "r{Puff Power Cinnamon Snickerdoodles}r";
-        } elseif ($day == "2012-10-31") {
-            $ret .= "r{Banana Bread Chocolate Chip Cookies}r";
-        } elseif ($day == "2012-11-01") {
-            $ret .= "r{Cinnamon Hazelnut Biscotti}r";
-        } else {
-            return "";
-        }
+        $ret .= $snacks;
         $ret .= ", today only at http://www.defconyum.com/\n";
+
+        //if ($day == "2012-10-17") {
+        //    $ret .= "Today only, r{Chocolate Overload Espresso Brownies}r";
+        //} elseif ($day == "2012-10-25") {
+        //    $ret .= "r{Apple Cider Caramel Cookies}r";
+        //} else {
+        //    return "";
+        //}
+
         return $ret;
     }
 
