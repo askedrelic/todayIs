@@ -112,7 +112,7 @@ class PostBot {
     }
 
     private function insertBrownies() {
-        //sign unix > php
+        //sigh unix > php
         $snacks = system('curl -s http://www.defconyum.com/ | grep -oiE "<h1.*?/h1>" | sed -e "s/<[^>]*>//g"');
         if (empty($snacks)) {
             return "";
