@@ -7,6 +7,7 @@ class BirthdayPost extends Post {
         //TODO: refactor out passwords/mysql connection details?
         $connection = mysql_connect("localhost", "shack", "shack");
         $numRows = 0;
+        $averageAge = 0;
         if ($connection !== False) {
             mysql_select_db("shack");
 
@@ -15,6 +16,10 @@ class BirthdayPost extends Post {
 
             //If there are rows/results
             $numRows = mysql_numrows($result);
+
+            $query = "select avg(year) as avg_year from (SELECT substring(dob,1,4) as year from birthdays having year > 1901 and year < 2001) as tb1;";
+            $result = mysql_query($query);
+            $averageAge = mysql_numrows($result)[0];
         }
 
         if($numRows > 0) {
