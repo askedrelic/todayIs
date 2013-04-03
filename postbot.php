@@ -25,6 +25,13 @@ function date_diff($date1, $date2) {
     return $count; 
 } 
 
+function differenceInDays($firstDate, $secondDate){
+    $firstDateTimeStamp = $firstDate->format("U");
+    $secondDateTimeStamp = $secondDate->format("U");
+    $rv = round ((($firstDateTimeStamp - $secondDateTimeStamp))/86400);
+    return $rv;
+}
+
 class PostBot {
     public $username;
     public $password;
@@ -60,7 +67,9 @@ class PostBot {
         //TODO create quote database to use here
         //$body .= "\n\n";
         // $body .= "This is the Best Of shacknews:";
-        //$body .= $this->insertShackconRelease();
+
+        $body .= "\n";
+        $body .= $this->insertShackconRelease();
         
         $snacks = $this->insertBrownies();
         if (!empty($snacks)) {
@@ -113,15 +122,16 @@ class PostBot {
 
     private function insertBrownies() {
         //sigh unix > php
-        $snacks = system('curl -s http://www.defconyum.com/ | grep -oiE "<h1.*?/h1>" | sed -e "s/<[^>]*>//g"');
+        $snacks = system('curl -s http://www.defconyum.com/askedrelic.php');
         if (empty($snacks) || strripos($snacks, "closed") !== false) {
             return "";
         }
 
         $ret = "\n";
-        $ret .= "HEY p[MULTISYNC]p buy some delicious ";
+        /* $ret .= "HEY p[MULTISYNC]p buy some delicious "; */
+        $ret .= "Buy some delicious ";
         $ret .= $snacks;
-        $ret .= ", today only at http://www.defconyum.com/\n";
+        /* $ret .= ", today only at http://www.defconyum.com/\n"; */
 
         //if ($day == "2012-10-17") {
         //    $ret .= "Today only, r{Chocolate Overload Espresso Brownies}r";
@@ -135,14 +145,14 @@ class PostBot {
     }
 
     private function insertShackconRelease() {
-        $launch_date = new DateTime('2012-07-08');
+        $launch_date = new DateTime('2013-07-04');
         $today = new DateTime("now");
-        $interval = date_diff($launch_date, $today);
-        if ($interval->d > 1) {
-            return "There are ". $interval->d ." days until Shackcon 2012!\n";
-        } elseif ($interval->d == 1) {
-            return "There is ". $interval->d ." day until Shackcon 2012!\n";
-        } elseif ($interval->d == 0) {
+        $interval = differenceInDays($launch_date, $today);
+        if ($interval > 1) {
+            return "There are ". $interval ." days until Shackcon 2013!\n";
+        } elseif ($interval == 1) {
+            return "There is ". $interval ." day until Shackcon 2013!\n";
+        } elseif ($interval == 0) {
             return "ZOMG VEGAS SHACKCON!!!\n";
         }
     }
