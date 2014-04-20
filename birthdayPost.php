@@ -11,21 +11,22 @@ class BirthdayPost extends Post {
         if ($connection !== False) {
             mysql_select_db("shack");
 
-            $query = "SELECT * FROM birthdays where dob like '%".date('m-d')."'";
-            $result = mysql_query($query);
-
-            //If there are rows/results
-            $numRows = mysql_numrows($result);
-
+            // fetch birthdays first on same connection
             $query = "select avg(year) as avg_year from (SELECT substring(dob,1,4) as year from birthdays having year > 1901 and year < 2001) as tb1;";
             $result = mysql_query($query);
-            $averageAge = mysql_numrows($result)[0];
+            $averageAge = mysql_fetch_array($result, MYSQL_ASSOC);
+            $averageAge = date("Y") - floatval($averageAge["avg_year"]);
+
+            $query = "SELECT * FROM birthdays where dob like '%".date('m-d')."'";
+            $result = mysql_query($query);
+            $numRows = mysql_numrows($result);
         }
 
         if($numRows > 0) {
             while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
                   $body .= "y{".$row["username"]."}y". self::agestring($row["dob"], $row["username"]) ."\n";
             }
+            $body .= "\nThe average shackage is now " . number_format($averageAge,2,'.','') . "!";
             $body .= "\nCongrats folks!\n";
         }
         else {
