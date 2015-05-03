@@ -61,8 +61,6 @@ class PostBot {
         $dayth = $p->ord_suf(date('z')+1);
         $body = "*[y{Today is ".date('l\, \t\h\e jS \o\f F').", the {$dayth} day of ".date('Y').".}y]*\n";
 
-        print $body;
-
         //$body .= system("curl -Is slashdot.org | egrep '^X-(F|B|L)' | sed s/^X-//");
 
         //TODO create quote database to use here
@@ -87,10 +85,9 @@ class PostBot {
 
         //post all posts in the pool
         foreach($this->posts as $p) {
-            print "--> on post " . $p;
+            print "--> on post {$p}\n";
             print "--> sleeping for {$this->sleeptime} seconds\n";
             sleep($this->sleeptime);
-            print "posting {$p}\n";
             print "http://www.shacknews.com/chatty?id=" . $this->post($p);
             print "\n";
         }
@@ -112,6 +109,9 @@ class PostBot {
 
     private function post($post) {
         try {
+            print "\n---------\n";
+            print $post->body;
+            print "\n---------\n";
             return ShackApi::post($this->username, $this->password, $post->body, $this->parentId);
         } catch (Exception $e) {
             print "--> exception while posting {$e}\n";
