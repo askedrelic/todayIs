@@ -14,5 +14,3 @@ class ShackmeetsPost extends Post
     parent::__construct($body);
   }
 }
-
-?>

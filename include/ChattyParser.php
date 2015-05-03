@@ -1,4 +1,4 @@
-<?
+<?php
 class ChattyParser extends Parser
 {
    public function getStory($storyID, $page)

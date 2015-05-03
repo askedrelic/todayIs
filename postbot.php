@@ -15,16 +15,16 @@ require_once 'shackmeetsPost.php';
 
 //set timezone to work with DateTime objects
 date_default_timezone_set('America/New_York');
-function date_diff($date1, $date2) { 
-    $current = $date1; 
-    $datetime2 = date_create($date2); 
-    $count = 0; 
-    while(date_create($current) < $datetime2){ 
-        $current = gmdate("Y-m-d", strtotime("+1 day", strtotime($current))); 
-        $count++; 
-    } 
-    return $count; 
-} 
+function date_diff2($date1, $date2) {
+    $current = $date1;
+    $datetime2 = date_create($date2);
+    $count = 0;
+    while(date_create($current) < $datetime2){
+        $current = gmdate("Y-m-d", strtotime("+1 day", strtotime($current)));
+        $count++;
+    }
+    return $count;
+}
 
 function differenceInDays($firstDate, $secondDate){
     $firstDateTimeStamp = $firstDate->format("U");
@@ -71,7 +71,7 @@ class PostBot {
 
         //$body .= "\n";
         //$body .= $this->insertShackconRelease();
-        
+
         //$snacks = $this->insertBrownies();
         //if (!empty($snacks)) {
         //    $body .= $snacks;
@@ -87,7 +87,8 @@ class PostBot {
 
         //post all posts in the pool
         foreach($this->posts as $p) {
-            print "sleeping for {$this->sleeptime} seconds\n";
+            print "--> on post " . $p;
+            print "--> sleeping for {$this->sleeptime} seconds\n";
             sleep($this->sleeptime);
             print "posting {$p}\n";
             print "http://www.shacknews.com/chatty?id=" . $this->post($p);
@@ -113,9 +114,10 @@ class PostBot {
         try {
             return ShackApi::post($this->username, $this->password, $post->body, $this->parentId);
         } catch (Exception $e) {
+            print "--> exception while posting {$e}\n";
             while (true) {
-                print "sleeping 300 secs\n";
-                sleep(300);
+                print "--> exception caused sleep 120 secs\n";
+                sleep(120);
                 return ShackApi::post($this->username, $this->password, $post->body, $this->parentId);
             }
         }

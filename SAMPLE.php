@@ -16,4 +16,3 @@ $a->addPost(new InfPost());
 
 //Post them!
 $a->makePosts();
-?>

@@ -1,4 +1,4 @@
-<?
+<?php
 
 class ShackAPI {
     const apiUrl = "http://www.shacknews.com/api/chat/create/17.json";

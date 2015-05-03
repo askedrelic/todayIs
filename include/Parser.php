@@ -1,4 +1,4 @@
-<?
+<?php
 class Parser
 {
    protected $cursors;

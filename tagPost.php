@@ -45,4 +45,3 @@ class TagPost extends Post {
         parent::__construct($body);
     }
 }
-?>

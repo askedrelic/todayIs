@@ -1,4 +1,4 @@
-<?
+<?php
 class ThreadParser extends Parser
 {
    public function getThread($threadID)
