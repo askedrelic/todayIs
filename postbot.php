@@ -69,13 +69,13 @@ class PostBot {
         //$body .= "\n\n";
         // $body .= "This is the Best Of shacknews:";
 
-        $body .= "\n";
-        $body .= $this->insertShackconRelease();
+        //$body .= "\n";
+        //$body .= $this->insertShackconRelease();
         
-        $snacks = $this->insertBrownies();
-        if (!empty($snacks)) {
-            $body .= $snacks;
-        }
+        //$snacks = $this->insertBrownies();
+        //if (!empty($snacks)) {
+        //    $body .= $snacks;
+        //}
 
         $p->body = $body;
         //make first post and override parentId
@@ -123,15 +123,16 @@ class PostBot {
 
     private function insertBrownies() {
         //sigh unix > php
-        $snacks = system('curl -s http://www.defconyum.com/askedrelic.php');
-        if (empty($snacks) || strripos($snacks, "closed") !== false) {
-            return "";
-        }
+        //$snacks = system('curl -s http://www.defconyum.com/askedrelic.php');
+        //if (empty($snacks) || strripos($snacks, "closed") !== false) {
+        //    return "";
+        //}
 
         $ret = "\n";
         /* $ret .= "HEY p[MULTISYNC]p buy some delicious "; */
-        $ret .= "Buy some delicious ";
-        $ret .= $snacks;
+        $ret .= "Rest In Crumbles Defcon YUM :(\n";
+        $ret .+ "http://www.defconyum.com/goodbye.php\n";
+
         /* $ret .= ", today only at http://www.defconyum.com/\n"; */
 
         //if ($day == "2012-10-17") {
