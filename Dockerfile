@@ -13,5 +13,4 @@ RUN apt-get -y install curl git vim
 RUN apt-get -y install php5 php5-mysql php5-curl mysql-client
 
 # add all required files in /data/
-ADD ./*.php /data/
-ADD ./include/ /data/include/
+ADD . /data/
