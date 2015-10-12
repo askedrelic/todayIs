@@ -14,3 +14,7 @@ RUN apt-get -y install php5 php5-mysql php5-curl mysql-client
 
 # add all required files in /data/
 ADD . /data/
+
+EXPOSE 9000
+WORKDIR /media/
+CMD python -m SimpleHTTPServer 9000
