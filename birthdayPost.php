@@ -32,7 +32,7 @@ class BirthdayPost extends Post {
         else {
             $body .= "No birthdays today!\n";
         }
-        $body .= "\ns[Want to add your birthday? http://www.asktherelic.com/shack/birthday.php]s";
+        $body .= "\ns[Want to add your birthday? http://shack.asktherelic.com/birthday.php]s";
         parent::__construct($body);
     }
 
