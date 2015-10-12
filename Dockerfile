@@ -10,7 +10,7 @@ RUN apt-get -y upgrade
 # nice to have programs
 RUN apt-get -y install curl git vim
 # required to run the script
-RUN apt-get -y install php5 php5-mysql php5-curl mysql-client
+RUN apt-get -y install php5 php5-mysql php5-curl mysql-client python
 
 # add all required files in /data/
 ADD . /data/
