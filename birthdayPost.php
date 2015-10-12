@@ -1,11 +1,11 @@
 <?php
 class BirthdayPost extends Post {
 
-    public function __construct(){
+    public function __construct($host, $user, $pass){
         $body = "_[l[Shacker Birthdays:]l]_ \n";
 
         //TODO: refactor out passwords/mysql connection details?
-        $connection = mysql_connect("localhost", "shack", "shack");
+        $connection = mysql_connect($host, $user, $pass);
         $numRows = 0;
         $averageAge = 0;
         if ($connection !== False) {
