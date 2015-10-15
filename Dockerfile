@@ -15,5 +15,4 @@ RUN apt-get -y update && apt-get -y install php5 php5-mysql php5-curl mysql-clie
 ADD . /data/
 
 EXPOSE 9000
-WORKDIR /media/
-CMD python -m SimpleHTTPServer 9000
+CMD cd /media && python -m SimpleHTTPServer 9000
