@@ -15,6 +15,7 @@ $a->addPost(new LolPost());
 $a->addPost(new TagPost());
 $a->addPost(new InfPost());
 $a->addPost(new ShackmeetsPost());
+$a->addPost(new ShackBattlesPost());
 
 //Post them!
 $a->makePosts();
