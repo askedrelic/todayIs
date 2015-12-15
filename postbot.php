@@ -12,6 +12,7 @@ require_once 'tagPost.php';
 require_once 'unfPost.php';
 require_once 'awardPost.php';
 require_once 'shackmeetsPost.php';
+require_once 'shackbattlesPost.php';
 
 //set timezone to work with DateTime objects
 date_default_timezone_set('America/New_York');
