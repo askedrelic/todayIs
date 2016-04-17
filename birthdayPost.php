@@ -26,13 +26,13 @@ class BirthdayPost extends Post {
             while ($row = mysql_fetch_array($result, MYSQL_ASSOC)) {
                   $body .= "y{".$row["username"]."}y". self::agestring($row["dob"], $row["username"]) ."\n";
             }
-            $body .= "\nThe average shackage is now " . number_format($averageAge,2,'.','') . "!";
-            $body .= "\nCongrats folks!\n";
+            $body .= "And as always, Happy Birthday, Shackers from the y{the man with the briefcase}y!!\n";
         }
         else {
-            $body .= "No birthdays today!\n";
+            $body .= "No birthdays today!\n\n";
         }
-        $body .= "\ns[Want to add your birthday? http://shack.asktherelic.com/birthday.php]s";
+        $body .= "s[The average shackage is now " . number_format($averageAge,2,'.','') . "!]s\n";
+        $body .= "s[Want to add your birthday? http://shack.asktherelic.com/birthday.php]s";
         parent::__construct($body);
     }
 
