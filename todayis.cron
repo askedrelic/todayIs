@@ -1,0 +1,24 @@
+# server cron jobs
+PATH=/usr/local/bin:/usr/bin:/bin
+SHELL=/bin/bash
+
+# m   h   dom mon dow   username command
+# *   *   *   *   *     dokku    command to be executed
+# -   -   -   -   -
+# |   |   |   |   |
+# |   |   |   |   +----- day of week (0 - 6) (Sunday=0)
+# |   |   |   +------- month (1 - 12)
+# |   |   +--------- day of month (1 - 31)
+# |   +----------- hour (0 - 23)
+# +----------- min (0 - 59)
+
+### PLACE ALL CRON TASKS BELOW
+
+# 7PM Berlin time
+0 17 * * * dokku dokku run shack run.sh | logger -t docker.todayis &
+
+# old style?
+# 0 17 * * * dokku dokku run shack "cd /app && sh run.sh" 2>&1 | logger -t docker.todayis &
+
+### PLACE ALL CRON TASKS ABOVE, DO NOT REMOVE THE WHITESPACE AFTER THIS LINE
+
