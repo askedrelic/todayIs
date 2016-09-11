@@ -14,7 +14,6 @@ $a->addPost(new BirthdayPost($_SERVER['DB_HOST'],$_SERVER['DB_USER'],$_SERVER['D
 $a->addPost(new LolPost());
 $a->addPost(new TagPost());
 $a->addPost(new InfPost());
-$a->addPost(new ShackmeetsPost());
 $a->addPost(new ShackBattlesPost());
 
 //Post them!
