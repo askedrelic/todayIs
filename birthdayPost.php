@@ -9,7 +9,8 @@ class BirthdayPost extends Post {
         $numRows = 0;
         $averageAge = 0;
         if ($connection !== False) {
-            mysql_select_db("shack");
+            // TODO: refactor this out too
+            mysql_select_db("shackdb");
 
             // fetch birthdays first on same connection
             $query = "select avg(year) as avg_year from (SELECT substring(dob,1,4) as year from birthdays having year > 1901 and year < 2001) as tb1;";
