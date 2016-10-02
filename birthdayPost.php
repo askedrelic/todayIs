@@ -13,7 +13,7 @@ class BirthdayPost extends Post {
             mysql_select_db("shackdb");
 
             // fetch birthdays first on same connection
-            $query = "select avg(year) as avg_year from (SELECT substring(dob,1,4) as year from birthdays having year > 1901 and year < 2001) as tb1;";
+            $query = "select avg(year) as avg_year from (SELECT substring(dob,1,4) as year from birthdays having year > 1901 and year < 2005) as tb1;";
             $result = mysql_query($query);
             $averageAge = mysql_fetch_array($result, MYSQL_ASSOC);
             $averageAge = date("Y") - floatval($averageAge["avg_year"]);
