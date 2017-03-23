@@ -7,3 +7,5 @@ dokku checks:disable shack
 # setup vars
 dokku config:set shack USE DOKKU_SKIP_DEPLOY=true SHACKUSER=user SHACKPASS=pass
 ```
+
+hi
