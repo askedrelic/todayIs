@@ -1,7 +1,7 @@
 <?php
 
 class ShackAPI {
-    const apiUrl = "http://www.shacknews.com/api/chat/create/17.json";
+    const apiUrl = "https://www.shacknews.com/api/chat/create/17.json";
 
     /**
      * Post message on shacknews.
