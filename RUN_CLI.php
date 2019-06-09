@@ -11,10 +11,10 @@ $a = new PostBot($_SERVER['USER'],$_SERVER['PASS']);
 
 //Add whichever posts you want
 $a->addPost(new BirthdayPost($_SERVER['DB_HOST'],$_SERVER['DB_USER'],$_SERVER['DB_PASS']));
-$a->addPost(new LolPost());
-$a->addPost(new TagPost());
-$a->addPost(new InfPost());
-$a->addPost(new ShackBattlesPost());
+//$a->addPost(new LolPost());
+//$a->addPost(new TagPost());
+//$a->addPost(new InfPost());
+//$a->addPost(new ShackBattlesPost());
 
 //Post them!
 $a->makePosts();
